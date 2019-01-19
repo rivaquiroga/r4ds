@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>3 Visualización de datos | R para Ciencia de Datos</title>
+  <meta name="description" content="Este texto te enseñará cómo hacer ciencia de datos con R: aprenderás a importar datos, llevarlos a la estructura más conveniente, transformarlos, visualizarlos y modelarlos. Con él podrás poner en pŕactica las habilidades necesarias para hacer ciencia de datos. Tal como los químicos aprenden a limpiar tubos de ensayo y ordenar un laboratorio, aprenderás a limpiar datos y crear gráficos— junto a muchas otras habilidades que permiten que la ciencia de datos tenga lugar. En este libro encontrarás las mejores prácticas para desarrollar dichas tareas usando R. También aprenderás a usar la gramática de gráficos, programación letrada e investigación reproducible para ahorrar tiempo. Además, aprenderás a manejar recursos cognitivos para facilitar el hacer descubrimientos al momento de manipular, visualizar y explorar datos.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="3 Visualización de datos | R para Ciencia de Datos" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://es.r4ds.hadley.nz/" />
+  <meta property="og:image" content="http://es.r4ds.hadley.nz/cover.png" />
+  <meta property="og:description" content="Este texto te enseñará cómo hacer ciencia de datos con R: aprenderás a importar datos, llevarlos a la estructura más conveniente, transformarlos, visualizarlos y modelarlos. Con él podrás poner en pŕactica las habilidades necesarias para hacer ciencia de datos. Tal como los químicos aprenden a limpiar tubos de ensayo y ordenar un laboratorio, aprenderás a limpiar datos y crear gráficos— junto a muchas otras habilidades que permiten que la ciencia de datos tenga lugar. En este libro encontrarás las mejores prácticas para desarrollar dichas tareas usando R. También aprenderás a usar la gramática de gráficos, programación letrada e investigación reproducible para ahorrar tiempo. Además, aprenderás a manejar recursos cognitivos para facilitar el hacer descubrimientos al momento de manipular, visualizar y explorar datos." />
+  <meta name="github-repo" content="cienciadedatos/r4ds" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Visualización de datos | R para Ciencia de Datos" />
+  
+  <meta name="twitter:description" content="Este texto te enseñará cómo hacer ciencia de datos con R: aprenderás a importar datos, llevarlos a la estructura más conveniente, transformarlos, visualizarlos y modelarlos. Con él podrás poner en pŕactica las habilidades necesarias para hacer ciencia de datos. Tal como los químicos aprenden a limpiar tubos de ensayo y ordenar un laboratorio, aprenderás a limpiar datos y crear gráficos— junto a muchas otras habilidades que permiten que la ciencia de datos tenga lugar. En este libro encontrarás las mejores prácticas para desarrollar dichas tareas usando R. También aprenderás a usar la gramática de gráficos, programación letrada e investigación reproducible para ahorrar tiempo. Además, aprenderás a manejar recursos cognitivos para facilitar el hacer descubrimientos al momento de manipular, visualizar y explorar datos." />
+  <meta name="twitter:image" content="http://es.r4ds.hadley.nz/cover.png" />
+
+<meta name="author" content="Garrett Grolemund">
+<meta name="author" content="Hadley Wickham">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="explora-introduccion.html">
+<link rel="next" href="workflow-basics.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
+<script src="libs/str_view-binding-1.3.1/str_view.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="r4ds.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">R for Data Science</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Bienvenida</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#sobre-la-traduccion"><i class="fa fa-check"></i><b>0.1</b> Sobre la traducción</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#sobre-la-version-original-en-ingles"><i class="fa fa-check"></i><b>0.2</b> Sobre la versión original en inglés</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-you-will-learn"><i class="fa fa-check"></i><b>1.1</b> What you will learn</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#how-this-book-is-organised"><i class="fa fa-check"></i><b>1.2</b> How this book is organised</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#what-you-wont-learn"><i class="fa fa-check"></i><b>1.3</b> What you won’t learn</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="introduction.html"><a href="introduction.html#big-data"><i class="fa fa-check"></i><b>1.3.1</b> Big data</a></li>
+<li class="chapter" data-level="1.3.2" data-path="introduction.html"><a href="introduction.html#python-julia-and-friends"><i class="fa fa-check"></i><b>1.3.2</b> Python, Julia, and friends</a></li>
+<li class="chapter" data-level="1.3.3" data-path="introduction.html"><a href="introduction.html#non-rectangular-data"><i class="fa fa-check"></i><b>1.3.3</b> Non-rectangular data</a></li>
+<li class="chapter" data-level="1.3.4" data-path="introduction.html"><a href="introduction.html#hypothesis-confirmation"><i class="fa fa-check"></i><b>1.3.4</b> Hypothesis confirmation</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#prerequisites"><i class="fa fa-check"></i><b>1.4</b> Prerequisites</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="introduction.html"><a href="introduction.html#r"><i class="fa fa-check"></i><b>1.4.1</b> R</a></li>
+<li class="chapter" data-level="1.4.2" data-path="introduction.html"><a href="introduction.html#rstudio"><i class="fa fa-check"></i><b>1.4.2</b> RStudio</a></li>
+<li class="chapter" data-level="1.4.3" data-path="introduction.html"><a href="introduction.html#the-tidyverse"><i class="fa fa-check"></i><b>1.4.3</b> The tidyverse</a></li>
+<li class="chapter" data-level="1.4.4" data-path="introduction.html"><a href="introduction.html#other-packages"><i class="fa fa-check"></i><b>1.4.4</b> Other packages</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#running-r-code"><i class="fa fa-check"></i><b>1.5</b> Running R code</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#getting-help-and-learning-more"><i class="fa fa-check"></i><b>1.6</b> Getting help and learning more</a></li>
+<li class="chapter" data-level="1.7" data-path="introduction.html"><a href="introduction.html#acknowledgements"><i class="fa fa-check"></i><b>1.7</b> Acknowledgements</a></li>
+<li class="chapter" data-level="1.8" data-path="introduction.html"><a href="introduction.html#colophon"><i class="fa fa-check"></i><b>1.8</b> Colophon</a></li>
+</ul></li>
+<li class="part"><span><b>I Explora</b></span></li>
+<li class="chapter" data-level="2" data-path="explora-introduccion.html"><a href="explora-introduccion.html"><i class="fa fa-check"></i><b>2</b> Introducción</a></li>
+<li class="chapter" data-level="3" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html"><i class="fa fa-check"></i><b>3</b> Visualización de datos</a><ul>
+<li class="chapter" data-level="3.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#introduccion"><i class="fa fa-check"></i><b>3.1</b> Introducción</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#prerrequisitos"><i class="fa fa-check"></i><b>3.1.1</b> Prerrequisitos</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#primeros-pasos"><i class="fa fa-check"></i><b>3.2</b> Primeros pasos</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#el-conjunto-de-datos-millas"><i class="fa fa-check"></i><b>3.2.1</b> El conjunto de datos <code>millas</code></a></li>
+<li class="chapter" data-level="3.2.2" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#creando-un-grafico-con-ggplot"><i class="fa fa-check"></i><b>3.2.2</b> Creando un gráfico con ggplot</a></li>
+<li class="chapter" data-level="3.2.3" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#una-plantilla-de-graficos"><i class="fa fa-check"></i><b>3.2.3</b> Una plantilla de gráficos</a></li>
+<li class="chapter" data-level="3.2.4" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios"><i class="fa fa-check"></i><b>3.2.4</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#mapeos-esteticos"><i class="fa fa-check"></i><b>3.3</b> Mapeos estéticos</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-1"><i class="fa fa-check"></i><b>3.3.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#problemas-comunes"><i class="fa fa-check"></i><b>3.4</b> Problemas comúnes</a></li>
+<li class="chapter" data-level="3.5" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#separar-en-facetas"><i class="fa fa-check"></i><b>3.5</b> Separar en facetas</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-2"><i class="fa fa-check"></i><b>3.5.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#objetos-geometricos"><i class="fa fa-check"></i><b>3.6</b> Objetos geométricos</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-3"><i class="fa fa-check"></i><b>3.6.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#transformaciones-estadisticas"><i class="fa fa-check"></i><b>3.7</b> Transformaciones estadísticas</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-4"><i class="fa fa-check"></i><b>3.7.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ajustes-de-posicion"><i class="fa fa-check"></i><b>3.8</b> Ajustes de posición</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-5"><i class="fa fa-check"></i><b>3.8.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#sistemas-de-coordenadas"><i class="fa fa-check"></i><b>3.9</b> Sistemas de coordenadas</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#ejercicios-6"><i class="fa fa-check"></i><b>3.9.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="visualizacion-de-datos.html"><a href="visualizacion-de-datos.html#la-gramatica-de-graficos-en-capas"><i class="fa fa-check"></i><b>3.10</b> La gramática de gráficos en capas</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="workflow-basics.html"><a href="workflow-basics.html"><i class="fa fa-check"></i><b>4</b> Workflow: basics</a><ul>
+<li class="chapter" data-level="4.1" data-path="workflow-basics.html"><a href="workflow-basics.html#coding-basics"><i class="fa fa-check"></i><b>4.1</b> Coding basics</a></li>
+<li class="chapter" data-level="4.2" data-path="workflow-basics.html"><a href="workflow-basics.html#whats-in-a-name"><i class="fa fa-check"></i><b>4.2</b> What’s in a name?</a></li>
+<li class="chapter" data-level="4.3" data-path="workflow-basics.html"><a href="workflow-basics.html#calling-functions"><i class="fa fa-check"></i><b>4.3</b> Calling functions</a></li>
+<li class="chapter" data-level="4.4" data-path="workflow-basics.html"><a href="workflow-basics.html#practice"><i class="fa fa-check"></i><b>4.4</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="transform.html"><a href="transform.html"><i class="fa fa-check"></i><b>5</b> Data transformation</a><ul>
+<li class="chapter" data-level="5.1" data-path="transform.html"><a href="transform.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="transform.html"><a href="transform.html#prerequisites-1"><i class="fa fa-check"></i><b>5.1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="5.1.2" data-path="transform.html"><a href="transform.html#nycflights13"><i class="fa fa-check"></i><b>5.1.2</b> nycflights13</a></li>
+<li class="chapter" data-level="5.1.3" data-path="transform.html"><a href="transform.html#dplyr-basics"><i class="fa fa-check"></i><b>5.1.3</b> dplyr basics</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="transform.html"><a href="transform.html#filter-rows-with-filter"><i class="fa fa-check"></i><b>5.2</b> Filter rows with <code>filter()</code></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="transform.html"><a href="transform.html#comparisons"><i class="fa fa-check"></i><b>5.2.1</b> Comparisons</a></li>
+<li class="chapter" data-level="5.2.2" data-path="transform.html"><a href="transform.html#logical-operators"><i class="fa fa-check"></i><b>5.2.2</b> Logical operators</a></li>
+<li class="chapter" data-level="5.2.3" data-path="transform.html"><a href="transform.html#missing-values"><i class="fa fa-check"></i><b>5.2.3</b> Missing values</a></li>
+<li class="chapter" data-level="5.2.4" data-path="transform.html"><a href="transform.html#exercises"><i class="fa fa-check"></i><b>5.2.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="transform.html"><a href="transform.html#arrange-rows-with-arrange"><i class="fa fa-check"></i><b>5.3</b> Arrange rows with <code>arrange()</code></a><ul>
+<li class="chapter" data-level="5.3.1" data-path="transform.html"><a href="transform.html#exercises-1"><i class="fa fa-check"></i><b>5.3.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="transform.html"><a href="transform.html#select"><i class="fa fa-check"></i><b>5.4</b> Select columns with <code>select()</code></a><ul>
+<li class="chapter" data-level="5.4.1" data-path="transform.html"><a href="transform.html#exercises-2"><i class="fa fa-check"></i><b>5.4.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="transform.html"><a href="transform.html#add-new-variables-with-mutate"><i class="fa fa-check"></i><b>5.5</b> Add new variables with <code>mutate()</code></a><ul>
+<li class="chapter" data-level="5.5.1" data-path="transform.html"><a href="transform.html#mutate-funs"><i class="fa fa-check"></i><b>5.5.1</b> Useful creation functions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="transform.html"><a href="transform.html#exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="transform.html"><a href="transform.html#grouped-summaries-with-summarise"><i class="fa fa-check"></i><b>5.6</b> Grouped summaries with <code>summarise()</code></a><ul>
+<li class="chapter" data-level="5.6.1" data-path="transform.html"><a href="transform.html#combining-multiple-operations-with-the-pipe"><i class="fa fa-check"></i><b>5.6.1</b> Combining multiple operations with the pipe</a></li>
+<li class="chapter" data-level="5.6.2" data-path="transform.html"><a href="transform.html#missing-values-1"><i class="fa fa-check"></i><b>5.6.2</b> Missing values</a></li>
+<li class="chapter" data-level="5.6.3" data-path="transform.html"><a href="transform.html#counts"><i class="fa fa-check"></i><b>5.6.3</b> Counts</a></li>
+<li class="chapter" data-level="5.6.4" data-path="transform.html"><a href="transform.html#summarise-funs"><i class="fa fa-check"></i><b>5.6.4</b> Useful summary functions</a></li>
+<li class="chapter" data-level="5.6.5" data-path="transform.html"><a href="transform.html#grouping-by-multiple-variables"><i class="fa fa-check"></i><b>5.6.5</b> Grouping by multiple variables</a></li>
+<li class="chapter" data-level="5.6.6" data-path="transform.html"><a href="transform.html#ungrouping"><i class="fa fa-check"></i><b>5.6.6</b> Ungrouping</a></li>
+<li class="chapter" data-level="5.6.7" data-path="transform.html"><a href="transform.html#exercises-4"><i class="fa fa-check"></i><b>5.6.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="transform.html"><a href="transform.html#grouped-mutates-and-filters"><i class="fa fa-check"></i><b>5.7</b> Grouped mutates (and filters)</a><ul>
+<li class="chapter" data-level="5.7.1" data-path="transform.html"><a href="transform.html#exercises-5"><i class="fa fa-check"></i><b>5.7.1</b> Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="workflow-scripts.html"><a href="workflow-scripts.html"><i class="fa fa-check"></i><b>6</b> Workflow: scripts</a><ul>
+<li class="chapter" data-level="6.1" data-path="workflow-scripts.html"><a href="workflow-scripts.html#running-code"><i class="fa fa-check"></i><b>6.1</b> Running code</a></li>
+<li class="chapter" data-level="6.2" data-path="workflow-scripts.html"><a href="workflow-scripts.html#rstudio-diagnostics"><i class="fa fa-check"></i><b>6.2</b> RStudio diagnostics</a></li>
+<li class="chapter" data-level="6.3" data-path="workflow-scripts.html"><a href="workflow-scripts.html#practice-1"><i class="fa fa-check"></i><b>6.3</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>7</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="7.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#prerequisites-2"><i class="fa fa-check"></i><b>7.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#questions"><i class="fa fa-check"></i><b>7.2</b> Questions</a></li>
+<li class="chapter" data-level="7.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#variation"><i class="fa fa-check"></i><b>7.3</b> Variation</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visualising-distributions"><i class="fa fa-check"></i><b>7.3.1</b> Visualising distributions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#typical-values"><i class="fa fa-check"></i><b>7.3.2</b> Typical values</a></li>
+<li class="chapter" data-level="7.3.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#unusual-values"><i class="fa fa-check"></i><b>7.3.3</b> Unusual values</a></li>
+<li class="chapter" data-level="7.3.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-6"><i class="fa fa-check"></i><b>7.3.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#missing-values-2"><i class="fa fa-check"></i><b>7.4</b> Missing values</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-7"><i class="fa fa-check"></i><b>7.4.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#covariation"><i class="fa fa-check"></i><b>7.5</b> Covariation</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#cat-cont"><i class="fa fa-check"></i><b>7.5.1</b> A categorical and continuous variable</a></li>
+<li class="chapter" data-level="7.5.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#two-categorical-variables"><i class="fa fa-check"></i><b>7.5.2</b> Two categorical variables</a></li>
+<li class="chapter" data-level="7.5.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#two-continuous-variables"><i class="fa fa-check"></i><b>7.5.3</b> Two continuous variables</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#patterns-and-models"><i class="fa fa-check"></i><b>7.6</b> Patterns and models</a></li>
+<li class="chapter" data-level="7.7" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#ggplot2-calls"><i class="fa fa-check"></i><b>7.7</b> ggplot2 calls</a></li>
+<li class="chapter" data-level="7.8" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#learning-more"><i class="fa fa-check"></i><b>7.8</b> Learning more</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="workflow-projects.html"><a href="workflow-projects.html"><i class="fa fa-check"></i><b>8</b> Workflow: projects</a><ul>
+<li class="chapter" data-level="8.1" data-path="workflow-projects.html"><a href="workflow-projects.html#what-is-real"><i class="fa fa-check"></i><b>8.1</b> What is real?</a></li>
+<li class="chapter" data-level="8.2" data-path="workflow-projects.html"><a href="workflow-projects.html#where-does-your-analysis-live"><i class="fa fa-check"></i><b>8.2</b> Where does your analysis live?</a></li>
+<li class="chapter" data-level="8.3" data-path="workflow-projects.html"><a href="workflow-projects.html#paths-and-directories"><i class="fa fa-check"></i><b>8.3</b> Paths and directories</a></li>
+<li class="chapter" data-level="8.4" data-path="workflow-projects.html"><a href="workflow-projects.html#rstudio-projects"><i class="fa fa-check"></i><b>8.4</b> RStudio projects</a></li>
+<li class="chapter" data-level="8.5" data-path="workflow-projects.html"><a href="workflow-projects.html#summary"><i class="fa fa-check"></i><b>8.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="parte-domar-datos.html"><a href="parte-domar-datos.html"><i class="fa fa-check"></i>(PARTE) Domar datos</a></li>
+<li class="chapter" data-level="9" data-path="introduccion-domar-datos-intro.html"><a href="introduccion-domar-datos-intro.html"><i class="fa fa-check"></i><b>9</b> Introducción {#domar datos -intro}</a></li>
+<li class="chapter" data-level="10" data-path="tibbles.html"><a href="tibbles.html"><i class="fa fa-check"></i><b>10</b> Tibbles</a><ul>
+<li class="chapter" data-level="10.1" data-path="tibbles.html"><a href="tibbles.html#introduccion-1"><i class="fa fa-check"></i><b>10.1</b> Introducción</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="tibbles.html"><a href="tibbles.html#requisitos"><i class="fa fa-check"></i><b>10.1.1</b> Requisitos</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="tibbles.html"><a href="tibbles.html#tibbles"><i class="fa fa-check"></i><b>10.2</b> Creando tibbles</a></li>
+<li class="chapter" data-level="10.3" data-path="tibbles.html"><a href="tibbles.html#tibbles-vs.data.frame"><i class="fa fa-check"></i><b>10.3</b> Tibbles vs. data.frame</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="tibbles.html"><a href="tibbles.html#impresion-en-la-consola"><i class="fa fa-check"></i><b>10.3.1</b> Impresión en la consola</a></li>
+<li class="chapter" data-level="10.3.2" data-path="tibbles.html"><a href="tibbles.html#seleccion-de-subconjuntos"><i class="fa fa-check"></i><b>10.3.2</b> Selección de subconjuntos</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="tibbles.html"><a href="tibbles.html#interactuando-con-codigo-previo"><i class="fa fa-check"></i><b>10.4</b> Interactuando con código previo</a></li>
+<li class="chapter" data-level="10.5" data-path="tibbles.html"><a href="tibbles.html#ejercicios-7"><i class="fa fa-check"></i><b>10.5</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>11</b> Data import</a><ul>
+<li class="chapter" data-level="11.1" data-path="data-import.html"><a href="data-import.html#introduction-3"><i class="fa fa-check"></i><b>11.1</b> Introduction</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="data-import.html"><a href="data-import.html#prerequisites-3"><i class="fa fa-check"></i><b>11.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="data-import.html"><a href="data-import.html#getting-started"><i class="fa fa-check"></i><b>11.2</b> Getting started</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="data-import.html"><a href="data-import.html#compared-to-base-r"><i class="fa fa-check"></i><b>11.2.1</b> Compared to base R</a></li>
+<li class="chapter" data-level="11.2.2" data-path="data-import.html"><a href="data-import.html#exercises-11"><i class="fa fa-check"></i><b>11.2.2</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="data-import.html"><a href="data-import.html#parsing-a-vector"><i class="fa fa-check"></i><b>11.3</b> Parsing a vector</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="data-import.html"><a href="data-import.html#numbers"><i class="fa fa-check"></i><b>11.3.1</b> Numbers</a></li>
+<li class="chapter" data-level="11.3.2" data-path="data-import.html"><a href="data-import.html#readr-strings"><i class="fa fa-check"></i><b>11.3.2</b> Strings</a></li>
+<li class="chapter" data-level="11.3.3" data-path="data-import.html"><a href="data-import.html#readr-factors"><i class="fa fa-check"></i><b>11.3.3</b> Factors</a></li>
+<li class="chapter" data-level="11.3.4" data-path="data-import.html"><a href="data-import.html#readr-datetimes"><i class="fa fa-check"></i><b>11.3.4</b> Dates, date-times, and times</a></li>
+<li class="chapter" data-level="11.3.5" data-path="data-import.html"><a href="data-import.html#exercises-12"><i class="fa fa-check"></i><b>11.3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="data-import.html"><a href="data-import.html#parsing-a-file"><i class="fa fa-check"></i><b>11.4</b> Parsing a file</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="data-import.html"><a href="data-import.html#strategy"><i class="fa fa-check"></i><b>11.4.1</b> Strategy</a></li>
+<li class="chapter" data-level="11.4.2" data-path="data-import.html"><a href="data-import.html#problems"><i class="fa fa-check"></i><b>11.4.2</b> Problems</a></li>
+<li class="chapter" data-level="11.4.3" data-path="data-import.html"><a href="data-import.html#other-strategies"><i class="fa fa-check"></i><b>11.4.3</b> Other strategies</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="data-import.html"><a href="data-import.html#writing-to-a-file"><i class="fa fa-check"></i><b>11.5</b> Writing to a file</a></li>
+<li class="chapter" data-level="11.6" data-path="data-import.html"><a href="data-import.html#other-types-of-data"><i class="fa fa-check"></i><b>11.6</b> Other types of data</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="datos-ordenados.html"><a href="datos-ordenados.html"><i class="fa fa-check"></i><b>12</b> Datos ordenados</a><ul>
+<li class="chapter" data-level="12.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#introduccion-2"><i class="fa fa-check"></i><b>12.1</b> Introducción</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#prerequisitos"><i class="fa fa-check"></i><b>12.1.1</b> Prerequisitos</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="datos-ordenados.html"><a href="datos-ordenados.html#datos-ordenados-1"><i class="fa fa-check"></i><b>12.2</b> Datos ordenados</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#ejercicios-8"><i class="fa fa-check"></i><b>12.2.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="datos-ordenados.html"><a href="datos-ordenados.html#gather-y-spread"><i class="fa fa-check"></i><b>12.3</b> Gather y Spread</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#gather"><i class="fa fa-check"></i><b>12.3.1</b> Gather</a></li>
+<li class="chapter" data-level="12.3.2" data-path="datos-ordenados.html"><a href="datos-ordenados.html#spread"><i class="fa fa-check"></i><b>12.3.2</b> Spread</a></li>
+<li class="chapter" data-level="12.3.3" data-path="datos-ordenados.html"><a href="datos-ordenados.html#ejercicios-9"><i class="fa fa-check"></i><b>12.3.3</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="datos-ordenados.html"><a href="datos-ordenados.html#separar-y-unir"><i class="fa fa-check"></i><b>12.4</b> Separar y unir</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#separar"><i class="fa fa-check"></i><b>12.4.1</b> Separar</a></li>
+<li class="chapter" data-level="12.4.2" data-path="datos-ordenados.html"><a href="datos-ordenados.html#unir"><i class="fa fa-check"></i><b>12.4.2</b> Unir</a></li>
+<li class="chapter" data-level="12.4.3" data-path="datos-ordenados.html"><a href="datos-ordenados.html#exercises-13"><i class="fa fa-check"></i><b>12.4.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="datos-ordenados.html"><a href="datos-ordenados.html#missing-values-3"><i class="fa fa-check"></i><b>12.5</b> Missing values</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#exercises-14"><i class="fa fa-check"></i><b>12.5.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="datos-ordenados.html"><a href="datos-ordenados.html#case-study"><i class="fa fa-check"></i><b>12.6</b> Case Study</a><ul>
+<li class="chapter" data-level="12.6.1" data-path="datos-ordenados.html"><a href="datos-ordenados.html#exercises-15"><i class="fa fa-check"></i><b>12.6.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12.7" data-path="datos-ordenados.html"><a href="datos-ordenados.html#non-tidy-data"><i class="fa fa-check"></i><b>12.7</b> Non-tidy data</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="relational-data.html"><a href="relational-data.html"><i class="fa fa-check"></i><b>13</b> Relational data</a><ul>
+<li class="chapter" data-level="13.1" data-path="relational-data.html"><a href="relational-data.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a><ul>
+<li class="chapter" data-level="13.1.1" data-path="relational-data.html"><a href="relational-data.html#prerequisites-4"><i class="fa fa-check"></i><b>13.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="relational-data.html"><a href="relational-data.html#nycflights13-relational"><i class="fa fa-check"></i><b>13.2</b> nycflights13</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="relational-data.html"><a href="relational-data.html#exercises-16"><i class="fa fa-check"></i><b>13.2.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="relational-data.html"><a href="relational-data.html#keys"><i class="fa fa-check"></i><b>13.3</b> Keys</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="relational-data.html"><a href="relational-data.html#exercises-17"><i class="fa fa-check"></i><b>13.3.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="relational-data.html"><a href="relational-data.html#mutating-joins"><i class="fa fa-check"></i><b>13.4</b> Mutating joins</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="relational-data.html"><a href="relational-data.html#understanding-joins"><i class="fa fa-check"></i><b>13.4.1</b> Understanding joins</a></li>
+<li class="chapter" data-level="13.4.2" data-path="relational-data.html"><a href="relational-data.html#inner-join"><i class="fa fa-check"></i><b>13.4.2</b> Inner join</a></li>
+<li class="chapter" data-level="13.4.3" data-path="relational-data.html"><a href="relational-data.html#outer-join"><i class="fa fa-check"></i><b>13.4.3</b> Outer joins</a></li>
+<li class="chapter" data-level="13.4.4" data-path="relational-data.html"><a href="relational-data.html#join-matches"><i class="fa fa-check"></i><b>13.4.4</b> Duplicate keys</a></li>
+<li class="chapter" data-level="13.4.5" data-path="relational-data.html"><a href="relational-data.html#join-by"><i class="fa fa-check"></i><b>13.4.5</b> Defining the key columns</a></li>
+<li class="chapter" data-level="13.4.6" data-path="relational-data.html"><a href="relational-data.html#exercises-18"><i class="fa fa-check"></i><b>13.4.6</b> Exercises</a></li>
+<li class="chapter" data-level="13.4.7" data-path="relational-data.html"><a href="relational-data.html#other-implementations"><i class="fa fa-check"></i><b>13.4.7</b> Other implementations</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="relational-data.html"><a href="relational-data.html#filtering-joins"><i class="fa fa-check"></i><b>13.5</b> Filtering joins</a><ul>
+<li class="chapter" data-level="13.5.1" data-path="relational-data.html"><a href="relational-data.html#exercises-19"><i class="fa fa-check"></i><b>13.5.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="relational-data.html"><a href="relational-data.html#join-problems"><i class="fa fa-check"></i><b>13.6</b> Join problems</a></li>
+<li class="chapter" data-level="13.7" data-path="relational-data.html"><a href="relational-data.html#set-operations"><i class="fa fa-check"></i><b>13.7</b> Set operations</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="strings.html"><a href="strings.html"><i class="fa fa-check"></i><b>14</b> Strings</a><ul>
+<li class="chapter" data-level="14.1" data-path="strings.html"><a href="strings.html#introduction-5"><i class="fa fa-check"></i><b>14.1</b> Introduction</a><ul>
+<li class="chapter" data-level="14.1.1" data-path="strings.html"><a href="strings.html#prerequisites-5"><i class="fa fa-check"></i><b>14.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="strings.html"><a href="strings.html#string-basics"><i class="fa fa-check"></i><b>14.2</b> String basics</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="strings.html"><a href="strings.html#string-length"><i class="fa fa-check"></i><b>14.2.1</b> String length</a></li>
+<li class="chapter" data-level="14.2.2" data-path="strings.html"><a href="strings.html#combining-strings"><i class="fa fa-check"></i><b>14.2.2</b> Combining strings</a></li>
+<li class="chapter" data-level="14.2.3" data-path="strings.html"><a href="strings.html#subsetting-strings"><i class="fa fa-check"></i><b>14.2.3</b> Subsetting strings</a></li>
+<li class="chapter" data-level="14.2.4" data-path="strings.html"><a href="strings.html#locales"><i class="fa fa-check"></i><b>14.2.4</b> Locales</a></li>
+<li class="chapter" data-level="14.2.5" data-path="strings.html"><a href="strings.html#exercises-20"><i class="fa fa-check"></i><b>14.2.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="strings.html"><a href="strings.html#matching-patterns-with-regular-expressions"><i class="fa fa-check"></i><b>14.3</b> Matching patterns with regular expressions</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="strings.html"><a href="strings.html#basic-matches"><i class="fa fa-check"></i><b>14.3.1</b> Basic matches</a></li>
+<li class="chapter" data-level="14.3.2" data-path="strings.html"><a href="strings.html#anchors"><i class="fa fa-check"></i><b>14.3.2</b> Anchors</a></li>
+<li class="chapter" data-level="14.3.3" data-path="strings.html"><a href="strings.html#character-classes-and-alternatives"><i class="fa fa-check"></i><b>14.3.3</b> Character classes and alternatives</a></li>
+<li class="chapter" data-level="14.3.4" data-path="strings.html"><a href="strings.html#repetition"><i class="fa fa-check"></i><b>14.3.4</b> Repetition</a></li>
+<li class="chapter" data-level="14.3.5" data-path="strings.html"><a href="strings.html#grouping-and-backreferences"><i class="fa fa-check"></i><b>14.3.5</b> Grouping and backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="strings.html"><a href="strings.html#tools"><i class="fa fa-check"></i><b>14.4</b> Tools</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="strings.html"><a href="strings.html#detect-matches"><i class="fa fa-check"></i><b>14.4.1</b> Detect matches</a></li>
+<li class="chapter" data-level="14.4.2" data-path="strings.html"><a href="strings.html#exercises-26"><i class="fa fa-check"></i><b>14.4.2</b> Exercises</a></li>
+<li class="chapter" data-level="14.4.3" data-path="strings.html"><a href="strings.html#extract-matches"><i class="fa fa-check"></i><b>14.4.3</b> Extract matches</a></li>
+<li class="chapter" data-level="14.4.4" data-path="strings.html"><a href="strings.html#grouped-matches"><i class="fa fa-check"></i><b>14.4.4</b> Grouped matches</a></li>
+<li class="chapter" data-level="14.4.5" data-path="strings.html"><a href="strings.html#replacing-matches"><i class="fa fa-check"></i><b>14.4.5</b> Replacing matches</a></li>
+<li class="chapter" data-level="14.4.6" data-path="strings.html"><a href="strings.html#splitting"><i class="fa fa-check"></i><b>14.4.6</b> Splitting</a></li>
+<li class="chapter" data-level="14.4.7" data-path="strings.html"><a href="strings.html#find-matches"><i class="fa fa-check"></i><b>14.4.7</b> Find matches</a></li>
+</ul></li>
+<li class="chapter" data-level="14.5" data-path="strings.html"><a href="strings.html#other-types-of-pattern"><i class="fa fa-check"></i><b>14.5</b> Other types of pattern</a><ul>
+<li class="chapter" data-level="14.5.1" data-path="strings.html"><a href="strings.html#exercises-31"><i class="fa fa-check"></i><b>14.5.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="strings.html"><a href="strings.html#other-uses-of-regular-expressions"><i class="fa fa-check"></i><b>14.6</b> Other uses of regular expressions</a></li>
+<li class="chapter" data-level="14.7" data-path="strings.html"><a href="strings.html#stringi"><i class="fa fa-check"></i><b>14.7</b> stringi</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="strings.html"><a href="strings.html#exercises-32"><i class="fa fa-check"></i><b>14.7.1</b> Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="factores.html"><a href="factores.html"><i class="fa fa-check"></i><b>15</b> Factores</a><ul>
+<li class="chapter" data-level="15.1" data-path="factores.html"><a href="factores.html#introduccion-3"><i class="fa fa-check"></i><b>15.1</b> Introducción</a><ul>
+<li class="chapter" data-level="15.1.1" data-path="factores.html"><a href="factores.html#requisitos-previos"><i class="fa fa-check"></i><b>15.1.1</b> Requisitos previos</a></li>
+<li class="chapter" data-level="15.1.2" data-path="factores.html"><a href="factores.html#aprendiendo-mas"><i class="fa fa-check"></i><b>15.1.2</b> Aprendiendo más</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="factores.html"><a href="factores.html#creando-factores"><i class="fa fa-check"></i><b>15.2</b> Creando factores</a></li>
+<li class="chapter" data-level="15.3" data-path="factores.html"><a href="factores.html#encuesta-social-general"><i class="fa fa-check"></i><b>15.3</b> Encuesta social general</a><ul>
+<li class="chapter" data-level="15.3.1" data-path="factores.html"><a href="factores.html#ejercicios-10"><i class="fa fa-check"></i><b>15.3.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="factores.html"><a href="factores.html#modificar-el-orden-de-los-factores"><i class="fa fa-check"></i><b>15.4</b> Modificar el orden de los factores</a><ul>
+<li class="chapter" data-level="15.4.1" data-path="factores.html"><a href="factores.html#ejercicios-11"><i class="fa fa-check"></i><b>15.4.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="15.5" data-path="factores.html"><a href="factores.html#modificar-los-niveles-de-los-factores"><i class="fa fa-check"></i><b>15.5</b> Modificar los niveles de los factores</a><ul>
+<li class="chapter" data-level="15.5.1" data-path="factores.html"><a href="factores.html#ejercicios-12"><i class="fa fa-check"></i><b>15.5.1</b> Ejercicios</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html"><i class="fa fa-check"></i><b>16</b> Horas y fechas</a><ul>
+<li class="chapter" data-level="16.1" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#introduccion-4"><i class="fa fa-check"></i><b>16.1</b> Introducción</a><ul>
+<li class="chapter" data-level="16.1.1" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#requisitos-previos-1"><i class="fa fa-check"></i><b>16.1.1</b> Requisitos previos</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#creando-horasfechas"><i class="fa fa-check"></i><b>16.2</b> Creando horas/fechas</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#desde-cadenas-de-caracteres"><i class="fa fa-check"></i><b>16.2.1</b> Desde cadenas de caracteres</a></li>
+<li class="chapter" data-level="16.2.2" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#desde-componentes-individuales"><i class="fa fa-check"></i><b>16.2.2</b> Desde componentes individuales</a></li>
+<li class="chapter" data-level="16.2.3" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#desde-otros-tipos"><i class="fa fa-check"></i><b>16.2.3</b> Desde otros tipos</a></li>
+<li class="chapter" data-level="16.2.4" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#ejercicios-13"><i class="fa fa-check"></i><b>16.2.4</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#componentes-fecha-hora"><i class="fa fa-check"></i><b>16.3</b> Componentes fecha-hora</a><ul>
+<li class="chapter" data-level="16.3.1" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#obteniendo-los-componentes"><i class="fa fa-check"></i><b>16.3.1</b> Obteniendo los componentes</a></li>
+<li class="chapter" data-level="16.3.2" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#redondeo"><i class="fa fa-check"></i><b>16.3.2</b> Redondeo</a></li>
+<li class="chapter" data-level="16.3.3" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#configurando-componentes"><i class="fa fa-check"></i><b>16.3.3</b> Configurando componentes</a></li>
+<li class="chapter" data-level="16.3.4" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#ejercicios-14"><i class="fa fa-check"></i><b>16.3.4</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="16.4" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#plazos-de-tiempo"><i class="fa fa-check"></i><b>16.4</b> Plazos de tiempo</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#duraciones"><i class="fa fa-check"></i><b>16.4.1</b> Duraciones</a></li>
+<li class="chapter" data-level="16.4.2" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#periodos"><i class="fa fa-check"></i><b>16.4.2</b> Períodos</a></li>
+<li class="chapter" data-level="16.4.3" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#intervalos"><i class="fa fa-check"></i><b>16.4.3</b> Intervalos</a></li>
+<li class="chapter" data-level="16.4.4" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#resumen"><i class="fa fa-check"></i><b>16.4.4</b> Resumen</a></li>
+<li class="chapter" data-level="16.4.5" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#ejercicios-15"><i class="fa fa-check"></i><b>16.4.5</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="16.5" data-path="horas-y-fechas.html"><a href="horas-y-fechas.html#husos-horarios"><i class="fa fa-check"></i><b>16.5</b> Husos horarios</a></li>
+</ul></li>
+<li class="part"><span><b>II Programar</b></span></li>
+<li class="chapter" data-level="17" data-path="programar-intro.html"><a href="programar-intro.html"><i class="fa fa-check"></i><b>17</b> Introducción</a><ul>
+<li class="chapter" data-level="17.1" data-path="programar-intro.html"><a href="programar-intro.html#aprendiendo-mas-1"><i class="fa fa-check"></i><b>17.1</b> Aprendiendo más</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i><b>18</b> Pipes</a><ul>
+<li class="chapter" data-level="18.1" data-path="pipes.html"><a href="pipes.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a><ul>
+<li class="chapter" data-level="18.1.1" data-path="pipes.html"><a href="pipes.html#prerequisites-6"><i class="fa fa-check"></i><b>18.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="pipes.html"><a href="pipes.html#piping-alternatives"><i class="fa fa-check"></i><b>18.2</b> Piping alternatives</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="pipes.html"><a href="pipes.html#intermediate-steps"><i class="fa fa-check"></i><b>18.2.1</b> Intermediate steps</a></li>
+<li class="chapter" data-level="18.2.2" data-path="pipes.html"><a href="pipes.html#overwrite-the-original"><i class="fa fa-check"></i><b>18.2.2</b> Overwrite the original</a></li>
+<li class="chapter" data-level="18.2.3" data-path="pipes.html"><a href="pipes.html#function-composition"><i class="fa fa-check"></i><b>18.2.3</b> Function composition</a></li>
+<li class="chapter" data-level="18.2.4" data-path="pipes.html"><a href="pipes.html#use-the-pipe"><i class="fa fa-check"></i><b>18.2.4</b> Use the pipe</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="pipes.html"><a href="pipes.html#when-not-to-use-the-pipe"><i class="fa fa-check"></i><b>18.3</b> When not to use the pipe</a></li>
+<li class="chapter" data-level="18.4" data-path="pipes.html"><a href="pipes.html#other-tools-from-magrittr"><i class="fa fa-check"></i><b>18.4</b> Other tools from magrittr</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>19</b> Functions</a><ul>
+<li class="chapter" data-level="19.1" data-path="functions.html"><a href="functions.html#introduction-7"><i class="fa fa-check"></i><b>19.1</b> Introduction</a><ul>
+<li class="chapter" data-level="19.1.1" data-path="functions.html"><a href="functions.html#prerequisites-7"><i class="fa fa-check"></i><b>19.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="19.2" data-path="functions.html"><a href="functions.html#when-should-you-write-a-function"><i class="fa fa-check"></i><b>19.2</b> When should you write a function?</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="functions.html"><a href="functions.html#practice-2"><i class="fa fa-check"></i><b>19.2.1</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="functions.html"><a href="functions.html#functions-are-for-humans-and-computers"><i class="fa fa-check"></i><b>19.3</b> Functions are for humans and computers</a><ul>
+<li class="chapter" data-level="19.3.1" data-path="functions.html"><a href="functions.html#exercises-33"><i class="fa fa-check"></i><b>19.3.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="19.4" data-path="functions.html"><a href="functions.html#conditional-execution"><i class="fa fa-check"></i><b>19.4</b> Conditional execution</a><ul>
+<li class="chapter" data-level="19.4.1" data-path="functions.html"><a href="functions.html#conditions"><i class="fa fa-check"></i><b>19.4.1</b> Conditions</a></li>
+<li class="chapter" data-level="19.4.2" data-path="functions.html"><a href="functions.html#multiple-conditions"><i class="fa fa-check"></i><b>19.4.2</b> Multiple conditions</a></li>
+<li class="chapter" data-level="19.4.3" data-path="functions.html"><a href="functions.html#code-style"><i class="fa fa-check"></i><b>19.4.3</b> Code style</a></li>
+<li class="chapter" data-level="19.4.4" data-path="functions.html"><a href="functions.html#exercises-34"><i class="fa fa-check"></i><b>19.4.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="19.5" data-path="functions.html"><a href="functions.html#function-arguments"><i class="fa fa-check"></i><b>19.5</b> Function arguments</a><ul>
+<li class="chapter" data-level="19.5.1" data-path="functions.html"><a href="functions.html#choosing-names"><i class="fa fa-check"></i><b>19.5.1</b> Choosing names</a></li>
+<li class="chapter" data-level="19.5.2" data-path="functions.html"><a href="functions.html#checking-values"><i class="fa fa-check"></i><b>19.5.2</b> Checking values</a></li>
+<li class="chapter" data-level="19.5.3" data-path="functions.html"><a href="functions.html#dot-dot-dot"><i class="fa fa-check"></i><b>19.5.3</b> Dot-dot-dot (…)</a></li>
+<li class="chapter" data-level="19.5.4" data-path="functions.html"><a href="functions.html#lazy-evaluation"><i class="fa fa-check"></i><b>19.5.4</b> Lazy evaluation</a></li>
+<li class="chapter" data-level="19.5.5" data-path="functions.html"><a href="functions.html#exercises-35"><i class="fa fa-check"></i><b>19.5.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="functions.html"><a href="functions.html#return-values"><i class="fa fa-check"></i><b>19.6</b> Return values</a><ul>
+<li class="chapter" data-level="19.6.1" data-path="functions.html"><a href="functions.html#explicit-return-statements"><i class="fa fa-check"></i><b>19.6.1</b> Explicit return statements</a></li>
+<li class="chapter" data-level="19.6.2" data-path="functions.html"><a href="functions.html#writing-pipeable-functions"><i class="fa fa-check"></i><b>19.6.2</b> Writing pipeable functions</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="functions.html"><a href="functions.html#environment"><i class="fa fa-check"></i><b>19.7</b> Environment</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="vectores.html"><a href="vectores.html"><i class="fa fa-check"></i><b>20</b> Vectores</a><ul>
+<li class="chapter" data-level="20.1" data-path="vectores.html"><a href="vectores.html#introduccion-5"><i class="fa fa-check"></i><b>20.1</b> Introducción</a></li>
+<li class="chapter" data-level="20.2" data-path="vectores.html"><a href="vectores.html#pre-requisitos"><i class="fa fa-check"></i><b>20.2</b> Pre-requisitos</a></li>
+<li class="chapter" data-level="20.3" data-path="vectores.html"><a href="vectores.html#vectores-basicos"><i class="fa fa-check"></i><b>20.3</b> Vectores básicos</a></li>
+<li class="chapter" data-level="20.4" data-path="vectores.html"><a href="vectores.html#tipos-importantes-de-vectores-atomicos"><i class="fa fa-check"></i><b>20.4</b> Tipos importantes de vectores atómicos</a><ul>
+<li class="chapter" data-level="20.4.1" data-path="vectores.html"><a href="vectores.html#logico-o-booleano"><i class="fa fa-check"></i><b>20.4.1</b> Lógico o Booleano</a></li>
+<li class="chapter" data-level="20.4.2" data-path="vectores.html"><a href="vectores.html#numerico"><i class="fa fa-check"></i><b>20.4.2</b> Numérico</a></li>
+<li class="chapter" data-level="20.4.3" data-path="vectores.html"><a href="vectores.html#caracter"><i class="fa fa-check"></i><b>20.4.3</b> Caracter</a></li>
+<li class="chapter" data-level="20.4.4" data-path="vectores.html"><a href="vectores.html#valores-perdidos-missing-values"><i class="fa fa-check"></i><b>20.4.4</b> Valores perdidos (Missing values)</a></li>
+</ul></li>
+<li class="chapter" data-level="20.5" data-path="vectores.html"><a href="vectores.html#usando-vectores-atomicos"><i class="fa fa-check"></i><b>20.5</b> Usando vectores atómicos</a><ul>
+<li class="chapter" data-level="20.5.1" data-path="vectores.html"><a href="vectores.html#coercion"><i class="fa fa-check"></i><b>20.5.1</b> Coerción</a></li>
+<li class="chapter" data-level="20.5.2" data-path="vectores.html"><a href="vectores.html#funciones-de-test"><i class="fa fa-check"></i><b>20.5.2</b> Funciones de test</a></li>
+<li class="chapter" data-level="20.5.3" data-path="vectores.html"><a href="vectores.html#escalares-y-reglas-de-reciclado"><i class="fa fa-check"></i><b>20.5.3</b> Escalares y reglas de reciclado</a></li>
+<li class="chapter" data-level="20.5.4" data-path="vectores.html"><a href="vectores.html#nombrando-vectores"><i class="fa fa-check"></i><b>20.5.4</b> Nombrando vectores</a></li>
+<li class="chapter" data-level="20.5.5" data-path="vectores.html"><a href="vectores.html#subsetting-subdivision-o-creacion-de-subconjuntos-vector-subsetting-subdivision-de-vectores"><i class="fa fa-check"></i><b>20.5.5</b> Subsetting (Subdivisión o creación de subconjuntos) {#vector-subsetting, subdivisión de vectores}</a></li>
+<li class="chapter" data-level="20.5.6" data-path="vectores.html"><a href="vectores.html#ejercicios-16"><i class="fa fa-check"></i><b>20.5.6</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="20.6" data-path="vectores.html"><a href="vectores.html#vectores-recursivos-listas"><i class="fa fa-check"></i><b>20.6</b> Vectores Recursivos (listas)</a></li>
+<li class="chapter" data-level="20.7" data-path="vectores.html"><a href="vectores.html#visualizando-listas"><i class="fa fa-check"></i><b>20.7</b> Visualizando listas</a></li>
+<li class="chapter" data-level="20.8" data-path="vectores.html"><a href="vectores.html#listas-de-condimentos"><i class="fa fa-check"></i><b>20.8</b> Listas de Condimentos</a><ul>
+<li class="chapter" data-level="20.8.1" data-path="vectores.html"><a href="vectores.html#ejercicios-17"><i class="fa fa-check"></i><b>20.8.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="20.9" data-path="vectores.html"><a href="vectores.html#atributos"><i class="fa fa-check"></i><b>20.9</b> Atributos</a></li>
+<li class="chapter" data-level="20.10" data-path="vectores.html"><a href="vectores.html#vectores-aumentados"><i class="fa fa-check"></i><b>20.10</b> Vectores Aumentados</a><ul>
+<li class="chapter" data-level="20.10.1" data-path="vectores.html"><a href="vectores.html#dates-and-date-times-fechas-y-fecha-hora"><i class="fa fa-check"></i><b>20.10.1</b> Dates and date-times (Fechas y Fecha – Hora)</a></li>
+<li class="chapter" data-level="20.10.2" data-path="vectores.html"><a href="vectores.html#tibbles-1"><i class="fa fa-check"></i><b>20.10.2</b> Tibbles</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="iteration.html"><a href="iteration.html"><i class="fa fa-check"></i><b>21</b> Iteration</a><ul>
+<li class="chapter" data-level="21.1" data-path="iteration.html"><a href="iteration.html#introduction-8"><i class="fa fa-check"></i><b>21.1</b> Introduction</a><ul>
+<li class="chapter" data-level="21.1.1" data-path="iteration.html"><a href="iteration.html#prerequisites-8"><i class="fa fa-check"></i><b>21.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="iteration.html"><a href="iteration.html#for-loops"><i class="fa fa-check"></i><b>21.2</b> For loops</a><ul>
+<li class="chapter" data-level="21.2.1" data-path="iteration.html"><a href="iteration.html#exercises-36"><i class="fa fa-check"></i><b>21.2.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="iteration.html"><a href="iteration.html#for-loop-variations"><i class="fa fa-check"></i><b>21.3</b> For loop variations</a><ul>
+<li class="chapter" data-level="21.3.1" data-path="iteration.html"><a href="iteration.html#modifying-an-existing-object"><i class="fa fa-check"></i><b>21.3.1</b> Modifying an existing object</a></li>
+<li class="chapter" data-level="21.3.2" data-path="iteration.html"><a href="iteration.html#looping-patterns"><i class="fa fa-check"></i><b>21.3.2</b> Looping patterns</a></li>
+<li class="chapter" data-level="21.3.3" data-path="iteration.html"><a href="iteration.html#unknown-output-length"><i class="fa fa-check"></i><b>21.3.3</b> Unknown output length</a></li>
+<li class="chapter" data-level="21.3.4" data-path="iteration.html"><a href="iteration.html#unknown-sequence-length"><i class="fa fa-check"></i><b>21.3.4</b> Unknown sequence length</a></li>
+<li class="chapter" data-level="21.3.5" data-path="iteration.html"><a href="iteration.html#exercises-37"><i class="fa fa-check"></i><b>21.3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="iteration.html"><a href="iteration.html#for-loops-vs.functionals"><i class="fa fa-check"></i><b>21.4</b> For loops vs. functionals</a><ul>
+<li class="chapter" data-level="21.4.1" data-path="iteration.html"><a href="iteration.html#exercises-38"><i class="fa fa-check"></i><b>21.4.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="iteration.html"><a href="iteration.html#the-map-functions"><i class="fa fa-check"></i><b>21.5</b> The map functions</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="iteration.html"><a href="iteration.html#shortcuts"><i class="fa fa-check"></i><b>21.5.1</b> Shortcuts</a></li>
+<li class="chapter" data-level="21.5.2" data-path="iteration.html"><a href="iteration.html#base-r"><i class="fa fa-check"></i><b>21.5.2</b> Base R</a></li>
+<li class="chapter" data-level="21.5.3" data-path="iteration.html"><a href="iteration.html#exercises-39"><i class="fa fa-check"></i><b>21.5.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="iteration.html"><a href="iteration.html#dealing-with-failure"><i class="fa fa-check"></i><b>21.6</b> Dealing with failure</a></li>
+<li class="chapter" data-level="21.7" data-path="iteration.html"><a href="iteration.html#mapping-over-multiple-arguments"><i class="fa fa-check"></i><b>21.7</b> Mapping over multiple arguments</a><ul>
+<li class="chapter" data-level="21.7.1" data-path="iteration.html"><a href="iteration.html#invoking-different-functions"><i class="fa fa-check"></i><b>21.7.1</b> Invoking different functions</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="iteration.html"><a href="iteration.html#walk"><i class="fa fa-check"></i><b>21.8</b> Walk</a></li>
+<li class="chapter" data-level="21.9" data-path="iteration.html"><a href="iteration.html#other-patterns-of-for-loops"><i class="fa fa-check"></i><b>21.9</b> Other patterns of for loops</a><ul>
+<li class="chapter" data-level="21.9.1" data-path="iteration.html"><a href="iteration.html#predicate-functions"><i class="fa fa-check"></i><b>21.9.1</b> Predicate functions</a></li>
+<li class="chapter" data-level="21.9.2" data-path="iteration.html"><a href="iteration.html#reduce-and-accumulate"><i class="fa fa-check"></i><b>21.9.2</b> Reduce and accumulate</a></li>
+<li class="chapter" data-level="21.9.3" data-path="iteration.html"><a href="iteration.html#exercises-40"><i class="fa fa-check"></i><b>21.9.3</b> Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Model</b></span></li>
+<li class="chapter" data-level="22" data-path="model-intro.html"><a href="model-intro.html"><i class="fa fa-check"></i><b>22</b> Introducción</a><ul>
+<li class="chapter" data-level="22.1" data-path="model-intro.html"><a href="model-intro.html#generacion-de-hipotesis-vs.confirmacion-de-hipotesis"><i class="fa fa-check"></i><b>22.1</b> Generación de hipótesis vs. confirmación de hipótesis</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="model-basics.html"><a href="model-basics.html"><i class="fa fa-check"></i><b>23</b> Model basics</a><ul>
+<li class="chapter" data-level="23.1" data-path="model-basics.html"><a href="model-basics.html#introduction-9"><i class="fa fa-check"></i><b>23.1</b> Introduction</a><ul>
+<li class="chapter" data-level="23.1.1" data-path="model-basics.html"><a href="model-basics.html#prerequisites-9"><i class="fa fa-check"></i><b>23.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="23.2" data-path="model-basics.html"><a href="model-basics.html#a-simple-model"><i class="fa fa-check"></i><b>23.2</b> A simple model</a><ul>
+<li class="chapter" data-level="23.2.1" data-path="model-basics.html"><a href="model-basics.html#exercises-41"><i class="fa fa-check"></i><b>23.2.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="23.3" data-path="model-basics.html"><a href="model-basics.html#visualising-models"><i class="fa fa-check"></i><b>23.3</b> Visualising models</a><ul>
+<li class="chapter" data-level="23.3.1" data-path="model-basics.html"><a href="model-basics.html#predictions"><i class="fa fa-check"></i><b>23.3.1</b> Predictions</a></li>
+<li class="chapter" data-level="23.3.2" data-path="model-basics.html"><a href="model-basics.html#residuals"><i class="fa fa-check"></i><b>23.3.2</b> Residuals</a></li>
+<li class="chapter" data-level="23.3.3" data-path="model-basics.html"><a href="model-basics.html#exercises-42"><i class="fa fa-check"></i><b>23.3.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="23.4" data-path="model-basics.html"><a href="model-basics.html#formulas-and-model-families"><i class="fa fa-check"></i><b>23.4</b> Formulas and model families</a><ul>
+<li class="chapter" data-level="23.4.1" data-path="model-basics.html"><a href="model-basics.html#categorical-variables"><i class="fa fa-check"></i><b>23.4.1</b> Categorical variables</a></li>
+<li class="chapter" data-level="23.4.2" data-path="model-basics.html"><a href="model-basics.html#interactions-continuous-and-categorical"><i class="fa fa-check"></i><b>23.4.2</b> Interactions (continuous and categorical)</a></li>
+<li class="chapter" data-level="23.4.3" data-path="model-basics.html"><a href="model-basics.html#interactions-two-continuous"><i class="fa fa-check"></i><b>23.4.3</b> Interactions (two continuous)</a></li>
+<li class="chapter" data-level="23.4.4" data-path="model-basics.html"><a href="model-basics.html#transformations"><i class="fa fa-check"></i><b>23.4.4</b> Transformations</a></li>
+<li class="chapter" data-level="23.4.5" data-path="model-basics.html"><a href="model-basics.html#exercises-43"><i class="fa fa-check"></i><b>23.4.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="23.5" data-path="model-basics.html"><a href="model-basics.html#missing-values-4"><i class="fa fa-check"></i><b>23.5</b> Missing values</a></li>
+<li class="chapter" data-level="23.6" data-path="model-basics.html"><a href="model-basics.html#other-model-families"><i class="fa fa-check"></i><b>23.6</b> Other model families</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="model-building.html"><a href="model-building.html"><i class="fa fa-check"></i><b>24</b> Model building</a><ul>
+<li class="chapter" data-level="24.1" data-path="model-building.html"><a href="model-building.html#introduction-10"><i class="fa fa-check"></i><b>24.1</b> Introduction</a><ul>
+<li class="chapter" data-level="24.1.1" data-path="model-building.html"><a href="model-building.html#prerequisites-10"><i class="fa fa-check"></i><b>24.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="24.2" data-path="model-building.html"><a href="model-building.html#diamond-prices"><i class="fa fa-check"></i><b>24.2</b> Why are low quality diamonds more expensive?</a><ul>
+<li class="chapter" data-level="24.2.1" data-path="model-building.html"><a href="model-building.html#price-and-carat"><i class="fa fa-check"></i><b>24.2.1</b> Price and carat</a></li>
+<li class="chapter" data-level="24.2.2" data-path="model-building.html"><a href="model-building.html#a-more-complicated-model"><i class="fa fa-check"></i><b>24.2.2</b> A more complicated model</a></li>
+<li class="chapter" data-level="24.2.3" data-path="model-building.html"><a href="model-building.html#exercises-44"><i class="fa fa-check"></i><b>24.2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="24.3" data-path="model-building.html"><a href="model-building.html#what-affects-the-number-of-daily-flights"><i class="fa fa-check"></i><b>24.3</b> What affects the number of daily flights?</a><ul>
+<li class="chapter" data-level="24.3.1" data-path="model-building.html"><a href="model-building.html#day-of-week"><i class="fa fa-check"></i><b>24.3.1</b> Day of week</a></li>
+<li class="chapter" data-level="24.3.2" data-path="model-building.html"><a href="model-building.html#seasonal-saturday-effect"><i class="fa fa-check"></i><b>24.3.2</b> Seasonal Saturday effect</a></li>
+<li class="chapter" data-level="24.3.3" data-path="model-building.html"><a href="model-building.html#computed-variables"><i class="fa fa-check"></i><b>24.3.3</b> Computed variables</a></li>
+<li class="chapter" data-level="24.3.4" data-path="model-building.html"><a href="model-building.html#time-of-year-an-alternative-approach"><i class="fa fa-check"></i><b>24.3.4</b> Time of year: an alternative approach</a></li>
+<li class="chapter" data-level="24.3.5" data-path="model-building.html"><a href="model-building.html#exercises-45"><i class="fa fa-check"></i><b>24.3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="24.4" data-path="model-building.html"><a href="model-building.html#learning-more-about-models"><i class="fa fa-check"></i><b>24.4</b> Learning more about models</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="muchos-modelos.html"><a href="muchos-modelos.html"><i class="fa fa-check"></i><b>25</b> Muchos modelos</a><ul>
+<li class="chapter" data-level="25.1" data-path="muchos-modelos.html"><a href="muchos-modelos.html#introduccion-6"><i class="fa fa-check"></i><b>25.1</b> Introducción</a><ul>
+<li class="chapter" data-level="25.1.1" data-path="muchos-modelos.html"><a href="muchos-modelos.html#prerrequisitos-1"><i class="fa fa-check"></i><b>25.1.1</b> Prerrequisitos</a></li>
+</ul></li>
+<li class="chapter" data-level="25.2" data-path="muchos-modelos.html"><a href="muchos-modelos.html#gapminder"><i class="fa fa-check"></i><b>25.2</b> gapminder</a><ul>
+<li class="chapter" data-level="25.2.1" data-path="muchos-modelos.html"><a href="muchos-modelos.html#datos-anidados"><i class="fa fa-check"></i><b>25.2.1</b> Datos anidados</a></li>
+<li class="chapter" data-level="25.2.2" data-path="muchos-modelos.html"><a href="muchos-modelos.html#columnas-lista"><i class="fa fa-check"></i><b>25.2.2</b> Columnas-lista</a></li>
+<li class="chapter" data-level="25.2.3" data-path="muchos-modelos.html"><a href="muchos-modelos.html#desanidando"><i class="fa fa-check"></i><b>25.2.3</b> Desanidando</a></li>
+<li class="chapter" data-level="25.2.4" data-path="muchos-modelos.html"><a href="muchos-modelos.html#calidad-del-modelo"><i class="fa fa-check"></i><b>25.2.4</b> Calidad del modelo</a></li>
+<li class="chapter" data-level="25.2.5" data-path="muchos-modelos.html"><a href="muchos-modelos.html#ejercicios-18"><i class="fa fa-check"></i><b>25.2.5</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="25.3" data-path="muchos-modelos.html"><a href="muchos-modelos.html#columnas-lista-1"><i class="fa fa-check"></i><b>25.3</b> Columnas-lista</a></li>
+<li class="chapter" data-level="25.4" data-path="muchos-modelos.html"><a href="muchos-modelos.html#creando-columnas-lista"><i class="fa fa-check"></i><b>25.4</b> Creando columnas-lista</a><ul>
+<li class="chapter" data-level="25.4.1" data-path="muchos-modelos.html"><a href="muchos-modelos.html#con-anidacion"><i class="fa fa-check"></i><b>25.4.1</b> Con anidación</a></li>
+<li class="chapter" data-level="25.4.2" data-path="muchos-modelos.html"><a href="muchos-modelos.html#a-partir-de-funciones-vectorizadas"><i class="fa fa-check"></i><b>25.4.2</b> A partir de funciones vectorizadas</a></li>
+<li class="chapter" data-level="25.4.3" data-path="muchos-modelos.html"><a href="muchos-modelos.html#a-partir-de-medidas-de-resumen-con-mas-de-un-valor"><i class="fa fa-check"></i><b>25.4.3</b> A partir de medidas de resumen con más de un valor</a></li>
+<li class="chapter" data-level="25.4.4" data-path="muchos-modelos.html"><a href="muchos-modelos.html#a-partir-de-una-lista-nombrada"><i class="fa fa-check"></i><b>25.4.4</b> A partir de una lista nombrada</a></li>
+<li class="chapter" data-level="25.4.5" data-path="muchos-modelos.html"><a href="muchos-modelos.html#ejercicios-19"><i class="fa fa-check"></i><b>25.4.5</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="25.5" data-path="muchos-modelos.html"><a href="muchos-modelos.html#simplificando-columnas-lista"><i class="fa fa-check"></i><b>25.5</b> Simplificando columnas-lista</a><ul>
+<li class="chapter" data-level="25.5.1" data-path="muchos-modelos.html"><a href="muchos-modelos.html#lista-a-vector"><i class="fa fa-check"></i><b>25.5.1</b> Lista a vector</a></li>
+<li class="chapter" data-level="25.5.2" data-path="muchos-modelos.html"><a href="muchos-modelos.html#desanidando-1"><i class="fa fa-check"></i><b>25.5.2</b> Desanidando</a></li>
+<li class="chapter" data-level="25.5.3" data-path="muchos-modelos.html"><a href="muchos-modelos.html#ejercicios-20"><i class="fa fa-check"></i><b>25.5.3</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="25.6" data-path="muchos-modelos.html"><a href="muchos-modelos.html#haciendo-datos-ordenados-con-broom"><i class="fa fa-check"></i><b>25.6</b> Haciendo datos ordenados con broom</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>26</b> R Markdown</a><ul>
+<li class="chapter" data-level="26.1" data-path="r-markdown.html"><a href="r-markdown.html#introduction-11"><i class="fa fa-check"></i><b>26.1</b> Introduction</a><ul>
+<li class="chapter" data-level="26.1.1" data-path="r-markdown.html"><a href="r-markdown.html#prerequisites-11"><i class="fa fa-check"></i><b>26.1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="26.2" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-basics"><i class="fa fa-check"></i><b>26.2</b> R Markdown basics</a><ul>
+<li class="chapter" data-level="26.2.1" data-path="r-markdown.html"><a href="r-markdown.html#exercises-46"><i class="fa fa-check"></i><b>26.2.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="26.3" data-path="r-markdown.html"><a href="r-markdown.html#text-formatting-with-markdown"><i class="fa fa-check"></i><b>26.3</b> Text formatting with Markdown</a><ul>
+<li class="chapter" data-level="26.3.1" data-path="r-markdown.html"><a href="r-markdown.html#exercises-47"><i class="fa fa-check"></i><b>26.3.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="26.4" data-path="r-markdown.html"><a href="r-markdown.html#code-chunks"><i class="fa fa-check"></i><b>26.4</b> Code chunks</a><ul>
+<li class="chapter" data-level="26.4.1" data-path="r-markdown.html"><a href="r-markdown.html#chunk-name"><i class="fa fa-check"></i><b>26.4.1</b> Chunk name</a></li>
+<li class="chapter" data-level="26.4.2" data-path="r-markdown.html"><a href="r-markdown.html#chunk-options"><i class="fa fa-check"></i><b>26.4.2</b> Chunk options</a></li>
+<li class="chapter" data-level="26.4.3" data-path="r-markdown.html"><a href="r-markdown.html#table"><i class="fa fa-check"></i><b>26.4.3</b> Table</a></li>
+<li class="chapter" data-level="26.4.4" data-path="r-markdown.html"><a href="r-markdown.html#caching"><i class="fa fa-check"></i><b>26.4.4</b> Caching</a></li>
+<li class="chapter" data-level="26.4.5" data-path="r-markdown.html"><a href="r-markdown.html#global-options"><i class="fa fa-check"></i><b>26.4.5</b> Global options</a></li>
+<li class="chapter" data-level="26.4.6" data-path="r-markdown.html"><a href="r-markdown.html#inline-code"><i class="fa fa-check"></i><b>26.4.6</b> Inline code</a></li>
+<li class="chapter" data-level="26.4.7" data-path="r-markdown.html"><a href="r-markdown.html#exercises-48"><i class="fa fa-check"></i><b>26.4.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="26.5" data-path="r-markdown.html"><a href="r-markdown.html#troubleshooting"><i class="fa fa-check"></i><b>26.5</b> Troubleshooting</a></li>
+<li class="chapter" data-level="26.6" data-path="r-markdown.html"><a href="r-markdown.html#yaml-header"><i class="fa fa-check"></i><b>26.6</b> YAML header</a><ul>
+<li class="chapter" data-level="26.6.1" data-path="r-markdown.html"><a href="r-markdown.html#parameters"><i class="fa fa-check"></i><b>26.6.1</b> Parameters</a></li>
+<li class="chapter" data-level="26.6.2" data-path="r-markdown.html"><a href="r-markdown.html#bibliographies-and-citations"><i class="fa fa-check"></i><b>26.6.2</b> Bibliographies and Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="26.7" data-path="r-markdown.html"><a href="r-markdown.html#learning-more-1"><i class="fa fa-check"></i><b>26.7</b> Learning more</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html"><i class="fa fa-check"></i><b>27</b> Comunicar con gráficos</a><ul>
+<li class="chapter" data-level="27.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#introduccion-7"><i class="fa fa-check"></i><b>27.1</b> Introducción</a><ul>
+<li class="chapter" data-level="27.1.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#prerrequisitos-2"><i class="fa fa-check"></i><b>27.1.1</b> Prerrequisitos</a></li>
+</ul></li>
+<li class="chapter" data-level="27.2" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#etiquetas"><i class="fa fa-check"></i><b>27.2</b> Etiquetas</a><ul>
+<li class="chapter" data-level="27.2.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#ejercicios-21"><i class="fa fa-check"></i><b>27.2.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="27.3" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#anotaciones"><i class="fa fa-check"></i><b>27.3</b> Anotaciones</a><ul>
+<li class="chapter" data-level="27.3.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#ejercicios-22"><i class="fa fa-check"></i><b>27.3.1</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="27.4" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#escalas"><i class="fa fa-check"></i><b>27.4</b> Escalas</a><ul>
+<li class="chapter" data-level="27.4.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#marcas-de-los-ejes-y-leyendas"><i class="fa fa-check"></i><b>27.4.1</b> Marcas de los ejes y leyendas</a></li>
+<li class="chapter" data-level="27.4.2" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#diseno-de-leyendas"><i class="fa fa-check"></i><b>27.4.2</b> Diseño de leyendas</a></li>
+<li class="chapter" data-level="27.4.3" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#reemplazando-una-escala"><i class="fa fa-check"></i><b>27.4.3</b> Reemplazando una escala</a></li>
+<li class="chapter" data-level="27.4.4" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#ejercicios-23"><i class="fa fa-check"></i><b>27.4.4</b> Ejercicios</a></li>
+</ul></li>
+<li class="chapter" data-level="27.5" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#haciendo-zoom"><i class="fa fa-check"></i><b>27.5</b> Haciendo Zoom</a></li>
+<li class="chapter" data-level="27.6" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#temas"><i class="fa fa-check"></i><b>27.6</b> Temas</a></li>
+<li class="chapter" data-level="27.7" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#guardando-tus-graficos"><i class="fa fa-check"></i><b>27.7</b> Guardando tus gráficos</a><ul>
+<li class="chapter" data-level="27.7.1" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#redimensionar-una-figura"><i class="fa fa-check"></i><b>27.7.1</b> Redimensionar una figura</a></li>
+<li class="chapter" data-level="27.7.2" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#otras-opciones-importantes"><i class="fa fa-check"></i><b>27.7.2</b> Otras opciones importantes</a></li>
+</ul></li>
+<li class="chapter" data-level="27.8" data-path="comunicar-con-graficos.html"><a href="comunicar-con-graficos.html#aprendiendo-mas-2"><i class="fa fa-check"></i><b>27.8</b> Aprendiendo más</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html"><i class="fa fa-check"></i><b>28</b> R Markdown formats</a><ul>
+<li class="chapter" data-level="28.1" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#introduction-12"><i class="fa fa-check"></i><b>28.1</b> Introduction</a></li>
+<li class="chapter" data-level="28.2" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#output-options"><i class="fa fa-check"></i><b>28.2</b> Output options</a></li>
+<li class="chapter" data-level="28.3" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#documents"><i class="fa fa-check"></i><b>28.3</b> Documents</a></li>
+<li class="chapter" data-level="28.4" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#notebooks"><i class="fa fa-check"></i><b>28.4</b> Notebooks</a></li>
+<li class="chapter" data-level="28.5" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#presentations"><i class="fa fa-check"></i><b>28.5</b> Presentations</a></li>
+<li class="chapter" data-level="28.6" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#dashboards"><i class="fa fa-check"></i><b>28.6</b> Dashboards</a></li>
+<li class="chapter" data-level="28.7" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#interactivity"><i class="fa fa-check"></i><b>28.7</b> Interactivity</a><ul>
+<li class="chapter" data-level="28.7.1" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#htmlwidgets"><i class="fa fa-check"></i><b>28.7.1</b> htmlwidgets</a></li>
+<li class="chapter" data-level="28.7.2" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#shiny"><i class="fa fa-check"></i><b>28.7.2</b> Shiny</a></li>
+</ul></li>
+<li class="chapter" data-level="28.8" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#websites"><i class="fa fa-check"></i><b>28.8</b> Websites</a></li>
+<li class="chapter" data-level="28.9" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#other-formats"><i class="fa fa-check"></i><b>28.9</b> Other formats</a></li>
+<li class="chapter" data-level="28.10" data-path="r-markdown-formats.html"><a href="r-markdown-formats.html#learning-more-2"><i class="fa fa-check"></i><b>28.10</b> Learning more</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="r-markdown-workflow.html"><a href="r-markdown-workflow.html"><i class="fa fa-check"></i><b>29</b> R Markdown workflow</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R para Ciencia de Datos</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="visualizacion-de-datos" class="section level1">
+<h1><span class="header-section-number">3</span> Visualización de datos</h1>
+<div id="introduccion" class="section level2">
+<h2><span class="header-section-number">3.1</span> Introducción</h2>
+<blockquote>
+<p>“Un simple gráfico ha brindado más información a la mente del analista de datos
+que cualquier otro dispositivo”. — John Tukey</p>
+</blockquote>
+<p>En este capítulo aprenderás cómo visualizar datos usando el paquete <strong>ggplot2</strong>. De los muchos sistemas que posee R para hacer gráficos, <strong>ggplot2</strong> es uno de los más elegantes y versátiles. Esto se debe a que implementa un sistema coherente para describir y construir gráficos, conocido como la <strong>gramática de gráficos</strong>. Con <strong>ggplot2</strong> puedes hacer más cosas en menor tiempo, aprendiendo un único sistema y aplicándolo en muchos lugares</p>
+<p>Si deseas obtener más información sobre los fundamentos teóricos de <strong>ggplot2</strong> antes de comenzar, te recomendamos leer “La gramática de gráficos en capas”, <a href="http://vita.had.co.nz/papers/layered-grammar.pdf" class="uri">http://vita.had.co.nz/papers/layered-grammar.pdf</a>.</p>
+<div id="prerrequisitos" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Prerrequisitos</h3>
+<p>Este capítulo se centra en <strong>ggplot2</strong>, uno de los paquetes principales de tidyverse. Para acceder a los conjuntos de datos, las páginas de ayuda y las funciones que utilizaremos en este capítulo, debes cargar tidyverse ejecutando este código:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</span>
+<span class="co">#&gt; ✔ ggplot2 3.1.0.9000     ✔ purrr   0.2.5     </span>
+<span class="co">#&gt; ✔ tibble  2.0.1          ✔ dplyr   0.7.8     </span>
+<span class="co">#&gt; ✔ tidyr   0.8.2          ✔ stringr 1.3.1     </span>
+<span class="co">#&gt; ✔ readr   1.3.1          ✔ forcats 0.3.0</span>
+<span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
+<span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span>
+<span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></code></pre>
+<p>Esa única línea de código carga el núcleo de tidyverse; compuesto por los paquetes que usarás en casi todos tus análisis de datos. Al correr esta línea verás cuáles funciones de tidyverse pueden tener conflicto con funciones de R base (o de otros paquetes que puedas haber cargado previamente).</p>
+<p>Si ejecutas este código y recibes el mensaje de error “no hay ningún paquete llamado ‘tidyverse’”, primero deberás instalarlo y luego ejecutar <code>library ()</code> una vez más.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)
+
+<span class="kw">library</span>(tidyverse)</code></pre>
+<p>Solo necesitas instalar el paquete una única vez, pero debes volver a cargarlo siempre que inicies una nueva sesión.</p>
+<p>Si necesitamos ser explícitos acerca de dónde viene una función (o un conjunto de datos), usaremos el formato especial <code>package::function()</code>. Por ejemplo, <code>ggplot2::ggplot()</code> dice explícitamente que estamos usando la función <code>ggplot()</code> del paquete ggplot2.</p>
+</div>
+</div>
+<div id="primeros-pasos" class="section level2">
+<h2><span class="header-section-number">3.2</span> Primeros pasos</h2>
+<p>Usemos nuestro primer gráfico para responder una pregunta: ¿Los automóviles con motores grandes consumen más combustible que los automóviles con motores pequeños? Probablemente ya tengas una respuesta, pero trata de responder de forma precisa. ¿Cómo es la relación entre el tamaño del motor y la eficiencia del combustible? ¿Es positiva? ¿Es negativa? ¿Es lineal o no lineal?</p>
+<div id="el-conjunto-de-datos-millas" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> El conjunto de datos <code>millas</code></h3>
+<p>Puedes poner a prueba tu respuesta empleando el conjunto de datos <code>millas</code> que se encuentra en el paquete <strong>datos</strong> (<code>datos::millas</code>). Un conjunto de datos es una colección rectangular de variables (en las columnas) y observaciones (en las filas). <code>millas</code> contiene observaciones para 38 modelos de automóviles recopiladas por la Agencia de Protección Ambiental de los EE. UU.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(datos)
+
+millas
+<span class="co">#&gt; # A tibble: 234 x 11</span>
+<span class="co">#&gt;   fabricante modelo motor  anio cilindros transmision traccion ciudad</span>
+<span class="co">#&gt;   &lt;fct&gt;      &lt;fct&gt;  &lt;dbl&gt; &lt;int&gt;     &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;</span>
+<span class="co">#&gt; 1 audi       a4       1.8  1999         4 auto(l5)    d            18</span>
+<span class="co">#&gt; 2 audi       a4       1.8  1999         4 manual(m5)  d            21</span>
+<span class="co">#&gt; 3 audi       a4       2    2008         4 manual(m6)  d            20</span>
+<span class="co">#&gt; 4 audi       a4       2    2008         4 auto(av)    d            21</span>
+<span class="co">#&gt; 5 audi       a4       2.8  1999         6 auto(l5)    d            16</span>
+<span class="co">#&gt; 6 audi       a4       2.8  1999         6 manual(m5)  d            18</span>
+<span class="co">#&gt; # … with 228 more rows, and 3 more variables: autopista &lt;int&gt;,</span>
+<span class="co">#&gt; #   combustible &lt;fct&gt;, clase &lt;fct&gt;</span></code></pre>
+<p>Entre las variables en <code>millas</code> encontramos:</p>
+<p>1-<code>motor</code>. Tamaño del motor de un automóvil, en litros.</p>
+<p>2-<code>autopista</code>. La eficiencia del uso de combustible de un automóvil en la carretera, en millas por galón. Sobre la misma distancia, un automóvil de baja eficiencia consume más combustible que un automóvil de alta eficiencia.</p>
+<p>Para obtener más información sobre el conjunto de datos millas, puedes abrir la página de ayuda ejecutando <code>?millas</code>.</p>
+</div>
+<div id="creando-un-grafico-con-ggplot" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Creando un gráfico con ggplot</h3>
+<p>Para graficar <code>millas</code>, corre este código usando <code>motor</code> en el eje x y <code>autopista</code> en el eje y.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>El gráfico muestra una relación negativa entre el tamaño del motor (<code>motor</code>) y la eficiencia del combustible (<code>autopista</code>). En otras palabras, los autos con motores grandes usan más combustible. Este resultado, ¿confirma o refuta tu hipótesis acerca de la relación entre la eficiencia del combustible y el tamaño del motor?</p>
+<p>Para graficar con <strong>ggplot2</strong>, comienzas un gráfico con la función <code>ggplot()</code>. <code>ggplot()</code> crea un sistema de coordenadas al cual puedes agregar capas. El primer argumento de <code>ggplot()</code> es el conjunto de datos para usar en el gráfico. Si corres <code>ggplot(data = millas)</code>, obtendrás un gráfico vacío. Como no es muy interesante, no vamos a mostrarlo aquí.</p>
+<p>Para completar tu gráfico debes agregar una o más capas a <code>ggplot()</code>. La función <code>geom_point()</code> agrega una capa de puntos al gráfico, que crea un diagrama de dispersión (<em>scatterplot</em>). <strong>ggplot2</strong> incluye muchas funciones llamadas geom, cada una de las cuales agrega un tipo de capa diferente a un gráfico. Aprenderás sobre muchas de ellas a lo largo de este capítulo.</p>
+<p>Cada función geom en <strong>ggplot2</strong> tiene un argumento de <code>mapping</code>. Este define cómo se asignan o se “mapean” las variables del conjunto de datos a propiedades visuales. El argumento de <code>mapping</code> siempre aparece emparejado con <code>aes()</code>, y los argumentos <code>x</code> e <code>y</code> dentro de <code>aes()</code> especifican qué variables asignar a los ejes x e y. <strong>ggplot2</strong> busca la variable asignada en el argumento <code>data</code>, en este caso, <code>millas</code>.</p>
+</div>
+<div id="una-plantilla-de-graficos" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Una plantilla de gráficos</h3>
+<p>Convirtamos ahora este código en una plantilla reutilizable para hacer gráficos con <strong>ggplot2</strong>. Para hacer un gráfico, reemplaza las secciones entre corchetes en el siguiente código con un conjunto de datos, una función geom o una colección de mapeos.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="op">&lt;</span>DATOS<span class="op">&gt;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="er">&lt;</span>GEOM_FUNCION<span class="op">&gt;</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="op">&lt;</span>MAPEOS<span class="op">&gt;</span>)) </code></pre>
+<p>El resto de este capítulo te mostrará cómo utilizar y adaptar esta planilla para crear diferentes tipos de gráficos. Comenzaremos por el componente <code>&lt;MAPEOS&gt;</code></p>
+</div>
+<div id="ejercicios" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>Corre <code>ggplot(data = millas)</code>. ¿Qué observas?</p></li>
+<li><p>¿Cuántas filas hay en <code>millas</code>? ¿Cuántas columnas?</p></li>
+<li><p>¿Qué describe la variable <code>traccion</code>? Lee la ayuda de <code>?millas</code> para encontrar la respuesta.</p></li>
+<li><p>Realiza un gráfico de dispersión de las variables <code>autopista</code> y <code>cilindros</code>.</p></li>
+<li><p>¿Qué sucede cuando haces un gráfico de dispersión de <code>clase</code> versus <code>traccion</code>? ¿Por qué no es útil este gráfico?</p></li>
+</ol>
+</div>
+</div>
+<div id="mapeos-esteticos" class="section level2">
+<h2><span class="header-section-number">3.3</span> Mapeos estéticos</h2>
+<blockquote>
+<p>“El mayor valor de una imagen es cuando nos obliga a observar
+lo que no esperabamos ver”. — John Tukey</p>
+</blockquote>
+<p>En el siguiente gráfico, un grupo de puntos resaltados en rojo parece quedar fuera de la tendencia lineal. Estos autos tienen un kilometraje mayor de lo que esperaríamos. ¿Cómo puedes explicar estos autos?</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Supongamos que estos automóviles son híbridos. Una forma de probar esta hipótesis es observando la variable que indica la <code>clase</code> de cada automóvil. La variable <code>clase</code> del conjunto de datos de <code>millas</code> clasifica los autos en grupos como compacto, mediano y SUV. Si los puntos periféricos corresponden a automóviles híbridos, deberían estar clasificados como compactos o, tal vez, subcompactos (ten en cuenta que estos datos se recopilaron antes de que los camiones híbridos y SUV se hicieran populares).</p>
+<p>Puedes agregar una tercera variable, como <code>clase</code>, a un diagrama de dispersión bidimensional asignándolo a una <strong>estética</strong>. Una estética es una propiedad visual de los objetos de un gráfico. La estética incluye cosas como el tamaño, la forma o el color de tus puntos. Puedes mostrar un punto (como el siguiente) de diferentes maneras cambiando los valores de sus propiedades estéticas. Como ya usamos la palabra “valor” para describir los datos, usemos la palabra “nivel” para describir las propiedades estéticas. Aquí cambiamos los niveles del tamaño, la forma y el color de un punto para que el punto sea pequeño, triangular o azul:</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>El mapeo de las propiedades estéticas en tus gráficos a las variables en tu conjunto de datos te permite comunicar información de los mismos. Por ejemplo, puedes asignar los colores de tus puntos a la variable <code>clase</code> para revelar la clase de cada automóvil.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">color =</span> clase))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>(Si prefieres el inglés británico, como Hadley, puedes usar <code>colour</code> en lugar de <code>color</code>).</p>
+<p>(Si prefieres el inglés británico, como Hadley, puedes usar <code>colour</code> en lugar de <code>color</code>).
+Para asignar una estética a una variable, debes asociar el nombre de la estética al de la variable dentro de <code>aes()</code>. <strong>ggplot2</strong> asignará automáticamente un nivel único de la estética (en este ejemplo, un color ) a cada valor único de la variable. Este proceso es conocido como <strong>escalamiento</strong> (<em>scaling</em>). <strong>ggplot2</strong> acompañará el gráfico con una leyenda que explica qué niveles corresponden a qué valores.</p>
+<p>Los colores revelan que muchos de los puntos inusuales son los coches de dos asientos. ¡Estos automóviles no parecen híbridos, y son, de hecho, autos deportivos! Los autos deportivos tienen motores grandes, como camionetas todo terreno o pickups, a diferencia de los vehículos pequeños como los autos medianos y compactos, lo que mejora su consumo de gasolina. En retrospectiva, es poco probable que estos autos sean híbridos ya que tienen motores grandes.</p>
+<p>En el ejemplo anterior, asignamos la variable <code>clase</code> a la estética del color , pero podríamos haber asignado a la estética del tamaño de la misma manera. En este caso, el tamaño exacto de cada punto revelaría clase. Recibimos aquí una <strong>advertencia</strong> (<em>warning</em>), porque mapear una variable desordenada (<code>clase</code>) a una estética ordenada (<code>size</code>) no es una buena idea.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">size =</span> clase))
+<span class="co">#&gt; Warning: Using size for a discrete variable is not advised.</span></code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>También podríamos haber asignado la <code>clase</code> a la estética <em>alfa</em>, que controla la transparencia de los puntos o a la estética <em>shape</em> que controla la forma (shape) de los puntos.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Left</span>
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">alpha =</span> clase))
+
+<span class="co"># Right</span>
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">shape =</span> clase))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-11-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-11-2.png" width="50%" /></p>
+<p>¿Qué pasó con los SUV? <strong>ggplot2</strong> solo puede usar seis formas a la vez. De forma predeterminada, los grupos adicionales no se grafican cuando se emplea la estética de la forma.</p>
+<p>Para cada estética, se usa <code>aes()</code> para asociar el nombre de la estética con la variable seleccionada para graficar. La función <code>aes()</code> reúne cada una de las asignaciones estéticas utilizadas por una capa y las pasa al argumento de mapeo de la capa. La sintaxis resalta una visión útil sobre <code>x</code> e <code>y</code>: las ubicaciones de x e y de un punto son en sí mismas también estéticas, es decir propiedades visuales que se puede asignar a las variables para mostrar información sobre los datos.</p>
+<p>Una vez que asignas una estética, <strong>ggplot2</strong> se ocupa del resto. El paquete selecciona una escala razonable para usar con la estética elegida y construye una leyenda que explica la relación entre niveles y valores. Para la estética x e y, <strong>ggplot2</strong> no crea una leyenda, pero crea una línea que delimita el eje con sus marcas de graduación y una etiqueta. La línea del eje actúa como una leyenda; explica el mapeo entre ubicaciones y valores.</p>
+<p>También puedes <em>fijar</em> las propiedades estéticas de tu geom manualmente. Por ejemplo, podemos hacer que todos los puntos del gráfico sean azules:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista), <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Aquí, el color no transmite información sobre una variable, sino que cambia la apariencia del gráfico. Para establecer una estética de forma manual, debes usar el nombre de la estética como un argumento de la función geom; es decir, va <em>fuera</em> de <code>aes()</code>. Tendrás que elegir un nivel que tenga sentido para esa estética:</p>
+<ul>
+<li><p>El nombre de un color como una cadena de caracteres.</p></li>
+<li><p>El tamaño de un punto en mm.</p></li>
+<li><p>La forma de un punto como un número, como se muestra en la Figura <a href="visualizacion-de-datos.html#fig:shapes">3.1</a>.Hay algunas que parecen duplicados: por ejemplo 0, 15 y 22 son todos cuadrados. La diferencia viene de la interacción entre las estéticas <code>color</code> y <code>fill</code> (<em>relleno</em>). Las formas vacías (0–14) tienen un borde determinado por <code>color</code>; las formas sólidas (15–18) están rellenas con <code>color</code>; las formas rellenas (21–24) tienen un borde de <code>color</code> y están rellenas por <code>fill</code></p></li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:shapes"></span>
+<img src="visualize_files/figure-html/shapes-1.png" alt="R tiene 25 formas de default que están identificadas por números. ." width="75%" />
+<p class="caption">
+Figure 3.1: R tiene 25 formas de default que están identificadas por números. .
+</p>
+</div>
+<div id="ejercicios-1" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>¿Qué no va bien en este código? ¿Por qué hay puntos que no son azules?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;" /></p></li>
+<li><p>¿Qué variables en <code>millas</code> son categóricas? ¿Qué variables son continuas? (Sugerencia: escribe <code>? millas</code> para leer la documentación de ayuda para este conjunto de datos). ¿Cómo puedes ver esta información cuando ejecutas <code>millas</code>?</p></li>
+<li><p>Asigna una variable continua a <code>color</code>, <code>size</code>, y <code>shape</code>. ¿Cómo se comportan estas estéticas de manera diferente para variables categóricas y variables continuas?</p></li>
+<li><p>¿Qué ocurre si asignas o mapeas la misma variable a múltiples estéticas?</p></li>
+<li><p>¿Qué hace la estética <code>stroke</code>? ¿Con qué formas trabaja? (Sugerencia: consultar <code>?geom_point</code>)</p></li>
+<li><p>¿Qué ocurre si se asigna o mapea una estética a algo diferente del nombre de una variable, como ser <code>aes (color = motor &lt;5)</code>?</p></li>
+</ol>
+</div>
+</div>
+<div id="problemas-comunes" class="section level2">
+<h2><span class="header-section-number">3.4</span> Problemas comúnes</h2>
+<p>Es probable que encuentres problemas con los primeros códigos que ejecutes en R, e. No te preocupes, es lo más común . He estado escribiendo código en R durante años, ¡y todos los días sigo escribiendo código que no funciona!</p>
+<p>Comienza comparando cuidadosamente el código que estás ejecutando con el código en este libro. R es extremadamente exigente, y un carácter fuera de lugar puede marcar la diferencia. Asegúrate de que cada <code>(</code> coincida con un <code>)</code> y cada <code>&quot;</code> esté emparejado con otro<code>&quot;</code>. Algunas veces ejecutarás el código y no pasará nada. Comprueba la parte izquierda de tu consola: si es un <code>+</code>, significa que R no cree que hayas escrito una expresión completa y está esperando que la termines. En este caso, normalmente es fácil comenzar nuevamente desde cero presionando ESCAPE para cancelar el procesamiento del comando actual.</p>
+<p>Un problema común al crear gráficos con <strong>ggplot2</strong> es colocar el <code>+</code> en el lugar equivocado: debe encontrarse al final de la línea, no al inicio. En otras palabras, asegúrate de no haber escrito accidentalmente un código como este:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) 
+<span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))</code></pre>
+<p>Si esto no resuelve el problema, prueba la ayuda. Puedes obtener ayuda sobre cualquier función R ejecutando ?nombre_de_la_funcion en la consola, o seleccionando el nombre de la función y presionando F1 en RStudio. No te preocupes si la ayuda no te parece tan útil, trata entonces de saltar a los ejemplos y buscar un pedazo de código que coincida con lo que intentas hacer.</p>
+<p>Si eso no ayuda, lee cuidadosamente el mensaje de error. ¡A veces la respuesta estará oculta allí! Cuando eres nuevo en R, la respuesta puede estar en el mensaje de error, pero aún no sabes cómo entenderlo. Otra gran herramienta es Google: intenta buscar allí el mensaje de error, ya que es probable que otra persona haya tenido el mismo problema y haya obtenido ayuda en línea.</p>
+</div>
+<div id="separar-en-facetas" class="section level2">
+<h2><span class="header-section-number">3.5</span> Separar en facetas</h2>
+<p>Una forma de agregar variables adicionales es con las estéticas. Otra forma particularmente útil para las variables categóricas consiste en dividir el gráfico en <strong>facetas</strong>, sub-gráficos que muestran cada uno un subconjunto de los datos.</p>
+<p>Para separar en facetas un gráfico según una sola variable, usa <code>facet_wrap()</code> - del inglés <em>envolver una faceta</em>. El primer argumento de <code>facet_wrap()</code> debería ser una fórmula creada con <code>~</code> seguido por el nombre de una de las variable (aquí “fórmula” es el nombre de un tipo de estructura en R, no un sinónimo de “ecuación”). La variable que uses en <code>facet_wrap()</code> debe ser discreta.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>clase, <span class="dt">nrow =</span> <span class="dv">2</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Para separar en facetas un gráfico según las combinaciones de dos variables, agregua <code>facet_grid()</code> a tu código del gráfico. El primer argumento de <code>facet_grid()</code> también corresponde a una fórmula. Esta vez, la fórmula debe contener dos nombres de variables separados por un <code>~</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_grid</span>(traccion <span class="op">~</span><span class="st"> </span>cilindros)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-15-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Si prefieres no separar en facetas las filas o columnas, remplaza por un <code>.</code> el nombre de alguna de las variables, por ejemplo <code>+ facet_grid (. ~ cyl)</code>.</p>
+<div id="ejercicios-2" class="section level3">
+<h3><span class="header-section-number">3.5.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>Qué ocurre si intentas separar en facetas a una variable continua?</p></li>
+<li><p>¿Qué significan las celdas vacías que aparecen en el gráfico generado usando <code>facet_grid (traccion ~ cilindros)</code>?
+¿Cómo se relacionan con este gráfico?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> traccion, <span class="dt">y =</span> cilindros))</code></pre></li>
+<li><p>¿Qué gráfica el siguiente código? ¿Qué hace <code>.</code> ?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(traccion <span class="op">~</span><span class="st"> </span>.)
+
+
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>cilindros)</code></pre></li>
+<li><p>Mira de nuevo el primer gráfico en facetas presentado en esta sección:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>class, <span class="dt">nrow =</span> <span class="dv">2</span>)</code></pre></li>
+</ol>
+<p>¿Cuáles son las ventajas de separar en facetas en lugar de aplicar una estética de color?
+¿Cuáles son las desventajas?
+¿Cómo cambiaría este balance si tuvieras un conjunto de datos más grande?</p>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Lee <code>?facet_wrap</code>. ¿Qué hace <code>nrow</code>? ¿Qué hace <code>ncol</code>?
+¿Qué otras opciones controlan el diseño de los paneles individuales?
+¿Por qué <code>facet_grid()</code> no tiene argumentos <code>nrow</code> y <code>ncol</code>?</p></li>
+<li><p>Cuando usas <code>facet_grid()</code>, generalmente deberías poner la variable con un mayor número de niveles únicos en las columnas. ¿Por qué?</p></li>
+</ol>
+</div>
+</div>
+<div id="objetos-geometricos" class="section level2">
+<h2><span class="header-section-number">3.6</span> Objetos geométricos</h2>
+<p>¿Cómo son estos dos gráficos similares?</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-19-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-19-2.png" width="50%" /></p>
+<p>Ambos gráficos contienen las mismas variables x e y, y describen los mismos datos. Pero los gráficos no son idénticos. Cada gráfico usa un objeto visual diferente para representar los datos. En la sintaxis <strong>ggplot2</strong>, decimos que usan diferentes <strong>geoms</strong>.</p>
+<p>Un <strong>geom</strong> es el objeto geométrico usado para representar datos de forma gráfica. La gente a menudo llama los gráficos por el tipo de geom que utiliza. Por ejemplo, los diagramas de barras usan geoms de barra (<em>bar</em>), los diagramas de líneas usan geoms de línea (<em>line</em>), los diagramas de caja usan geoms de diagrama de caja (<em>boxplot</em>), y así sucesivamente. En inglés, los diagramas de puntos (llamados <em>scatterplots</em>) rompen la tendencia; ellos usan geom de punto (o <em>point</em>). Como vemos arriba, puedes usar diferentes geoms para graficar los mismos datos. La gráfica de la izquierda usa el geom de punto (<code>geom_point()</code>), y la gráfica de la derecha usa el geom liso (<code>geom_smooth()</code>), una línea suave ajustada a los datos.</p>
+<p>Para cambiar el geom de tu gráfico, modifica la función geom que acompaña a <code>ggplot ()</code>. Por ejemplo, para hacer los gráficos que se muestran arriba, puedes usar este código:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># left</span>
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))
+
+<span class="co"># right</span>
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))</code></pre>
+<p>Cada función geom en <strong>ggplot2</strong> toma un argumento de <code>mapping</code>. Sin embargo, no todas las estéticas funcionan con todos los geom. Podrías establecer la forma para un punto, pero no podrías establecer la “forma” de una línea. Por otro lado, para una línea es posible elegir el <em>tipo</em> de línea (<em>linetype</em>). <code>geom_smooth()</code> dibujará una línea diferente, con un tipo de línea diferente, para cada valor único de la variable que asignes al tipo de línea.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">linetype=</span>traccion))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-21-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Aquí <code>geom_smooth()</code> separa los automóviles en tres líneas en función de su valor de <code>traccion</code>, que describe el tipo de transmisión de un automóvil. Una línea describe todos los puntos con un valor de 4, otra línea los de valor d, y una tercera línea describe los puntos con un valor t. Aquí, <code>4</code> significa tracción en las cuatro ruedas, <code>d</code> tracción delantera y <code>t</code> tracción trasera.</p>
+<p>Si esto suena extraño, podemos hacerlo más claro al superponer las líneas sobre los datos brutos y luego colorear todo según <code>traccion</code>.</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>¡Observa que generamos un gráfico que contiene dos geoms! Si esto te emociona, abróchate el cinturón. En la siguiente sección aprenderemos cómo colocar múltiples geoms en el mismo gráfico.</p>
+<p><strong>ggplot2</strong> proporciona más de 30 geoms, y los paquetes de extensión proporcionan aún más (consulta <a href="https://www.ggplot2-exts.org" class="uri">https://www.ggplot2-exts.org</a> para obtener una muestra). La mejor forma de obtener un panorama completo sobre las posibilidades que brinda <strong>ggplot2</strong> es consultando la hoja de referencia (<em>cheatsheet</em>), que puedes encontrar en <a href="http://rstudio.com/cheatsheets" class="uri">http://rstudio.com/cheatsheets</a>. Para obtener más información sobre un tipo dado de geoms, usa la ayuda: <code>?geom_smooth</code>.</p>
+<p>Muchos geoms, tal como <code>geom_smooth()</code>, usan un único objeto geométrico para mostrar múltiples filas de datos. Para estos geoms, puedes asignar la estética de <code>group</code> a una variable categórica para graficar múltiples objetos. <strong>ggplot2</strong> representará un objeto distinto por cada valor único de la variable de agrupamiento. En la práctica, <strong>ggplot2</strong> agrupará automáticamente los datos para estos geoms siempre que se asigne una estética a una variable discreta (como en el ejemplo del tipo de línea o <code>linetype</code>). Es conveniente confiar en esta característica porque la estética del grupo en sí misma no agrega una leyenda o características distintivas a los geoms.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))
+              
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">group =</span> traccion))
+  
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">color =</span> traccion), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-23-1.png" width="33%" /><img src="visualize_files/figure-html/unnamed-chunk-23-2.png" width="33%" /><img src="visualize_files/figure-html/unnamed-chunk-23-3.png" width="33%" /></p>
+<p>Para mostrar múltiples geoms en el mismo gráfico, agrega varias funciones geom a <code>ggplot()</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Esto introduce sin embargo cierta duplicación en nuestro código. Imagina que deseas cambiar el eje y para mostrar <code>ciudad</code> en lugar de <code>autopista</code>. Necesitarías cambiar la variable en dos lugares, y podrías olvidarte de actualizar uno. Puedes evitar este tipo de repetición pasando un conjunto de mapeos a <code>ggplot()</code>. <strong>ggplot2</strong> tratará estos mapeos como mapeos globales que se aplican a cada geom en el gráfico. En otras palabras, este código producirá la misma gráfica que el código anterior:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre>
+<p>Si colocas mapeos en una función geom, ggplot2 los tratará como mapeos locales para la capa. Estas asignaciones serán usadas para extender o sobrescribir los mapeos globales <em>de solo esa capa</em>. Esto permite mostrar diferentes estéticas en diferentes capas.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">color =</span> class)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>La misma idea se puede emplear para especificar distintos conjuntos de datos (<code>data</code>) para cada capa. Aquí, nuestra línea suave muestra solo un subconjunto del conjunto de datos de <code>millas</code>, los autos subcompactos. El argumento de datos locales en <code>geom_smooth()</code> anula el argumento de datos globales en <code>ggplot()</code> solo para esa capa.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">color =</span> clase)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> <span class="kw">filter</span>(millas, clase <span class="op">==</span><span class="st"> &quot;subcompacto&quot;</span>), <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-27-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>(Aprenderás cómo funciona <code>filter()</code> en el próximo capítulo: por ahora, solo recuerda que este comando selecciona los automóviles subcompactos).</p>
+<div id="ejercicios-3" class="section level3">
+<h3><span class="header-section-number">3.6.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>¿Qué geom usarías para generar un gráfico de líneas?
+¿Un diagrama de caja? ¿Un histograma? ¿Un gráfico de área ?</p></li>
+<li><p>Ejecuta este código en tu mente y predice cómo se verá el <em>output</em>.
+Luego, ejecuta el código en R y verifica tus predicciones.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista, <span class="dt">color =</span> traccion)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></li>
+<li><p>¿Qué muestra <code>show.legend = FALSE</code>? ¿Qué pasa si lo quitas?
+¿Por qué crees que lo usé antes en el capítulo?</p></li>
+<li><p>¿Qué hace el argumento <code>se</code> en <code>geom_smooth()</code>?</p></li>
+<li><p>Will these two graphs look different? Why/why not?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">geom_smooth</span>()
+
+<span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista))</code></pre></li>
+<li><p>Recrea el código R necesario para generar los siguientes gráficos:</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-30-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-30-2.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-30-3.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-30-4.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-30-5.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-30-6.png" width="50%" /></p></li>
+</ol>
+</div>
+</div>
+<div id="transformaciones-estadisticas" class="section level2">
+<h2><span class="header-section-number">3.7</span> Transformaciones estadísticas</h2>
+<p>A continuación, echemos un vistazo a un gráfico de barras. Los gráficos de barras parecen simples, pero son interesantes porque revelan algo sutil sobre los gráficos. Considera un gráfico de barras básico, como se realizó con <code>geom_bar()</code>. El siguiente cuadro muestra la cantidad total de diamantes en el conjunto de datos de <code>diamantes</code>, agrupados por la variable <code>corte</code>. El conjunto de datos de <code>diamantes</code> se encuentra en el paquete <strong>datos</strong> y contiene información sobre ~ 54000 diamantes, incluido el <code>precio</code>, el <code>quilate</code>, el <code>color</code>, la <code>claridad</code> y el <code>corte</code> de cada diamante. El gráfico muestra que hay más diamantes disponibles con cortes de alta calidad que con cortes de baja calidad.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-31-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>En el eje x, el gráfico muestra <code>corte</code>, una variable de <code>diamantes</code>. En el eje y muestra recuento, ¡pero el recuento no es una variable en <code>diamantes</code>! ¿De dónde viene el recuento? Muchos gráficos, como los diagramas de dispersión, grafican los valores brutos de su conjunto de datos. Otros gráficos, como los gráficos de barras, calculan nuevos valores para presentar:</p>
+<ul>
+<li><p>los gráficos de barras, los histogramas y los polígonos de frecuencia almacenan los datos y luego grafican los conteos de contenedores, sea el número de puntos que caen en cada contenedor.</p></li>
+<li><p>los suavizadores ajustan un modelo a los datos y luego grafican las predicciones del modelo.</p></li>
+<li><p>los diagramas de caja calculan un sólido resumen de la distribución y luego muestran un cuadro con formato especial.</p></li>
+</ul>
+<p>El algoritmo utilizado para calcular nuevos valores para un gráfico se llama <em>stat</em>, abreviatura en inglés de transformación estadística. La siguiente figura describe cómo funciona este proceso con <code>geom_bar ()</code>.</p>
+<p><img src="images/visualization-stat-bar.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Puedes aprender qué stat usa cada geom inspeccionando el valor predeterminado para el argumento stat. Por ejemplo, <code>?geom_bar</code> muestra que el valor predeterminado para <code>stat</code> es “count”, lo que significa que <code>geom_bar()</code> usa <code>stat_count()</code>. <code>stat_count()</code> está documentado en la misma página que <code>geom_bar()</code>, y si te desplazas hacia abajo puedes encontrar una sección llamada “Variables calculadas” (<em>Computed variables</em>). Eso describe cómo calcula dos nuevas variables: <code>count</code> y <code>prop</code>.</p>
+<p>Por lo general puedes usar geoms y estadísticas de forma intercambiable. Por ejemplo, puedes volver a crear la gráfica anterior usando <code>stat_count()</code> en lugar de <code>geom_bar()</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_count</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-33-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Esto funciona porque cada geom tiene una estadística predeterminada; y cada estadística tiene un geom predeterminado. Esto significa que generalmente puedes usar geoms sin preocuparte por la transformación estadística subyacente. Hay tres razones por las que podrías necesitar usar una estadística explícitamente:</p>
+<ol style="list-style-type: decimal">
+<li><p>Es posible que desee anular la estadística predeterminada. En el siguiente código, cambio la estadística de <code>geom_bar()</code> de recuento (el valor predeterminado) a identidad. Esto me permite asignar la altura de las barras a los valores brutos de una variable <span class="math inline">\(y\)</span> . Desafortunadamente, cuando la gente habla de gráficos de barras casualmente, podría estar refiriéndose a este tipo de gráfico de barras, donde la altura de la barra ya está presente en los datos, o al gráfico de barras anterior, donde la altura de la barra se determina contando filas.</p>
+<pre class="sourceCode r"><code class="sourceCode r">demo &lt;-<span class="st"> </span><span class="kw">tribble</span>(
+ <span class="op">~</span>corte,         <span class="op">~</span>freq,
+ <span class="st">&quot;Regular&quot;</span>,       <span class="dv">1610</span>,
+ <span class="st">&quot;Bueno&quot;</span>,       <span class="dv">4906</span>,
+ <span class="st">&quot;Muy Bueno&quot;</span>,  <span class="dv">12082</span>,
+ <span class="st">&quot;Premium&quot;</span>,    <span class="dv">13791</span>,
+ <span class="st">&quot;Ideal&quot;</span>,      <span class="dv">21551</span>
+)
+
+<span class="kw">ggplot</span>(<span class="dt">data =</span> demo) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">y =</span> freq), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-34-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>(No te preocupes si nunca has visto <code>&lt;-</code> o <code>tribble()</code>. Puede que seas capaz de adivinar su significado por el contexto. ¡Aprenderás lo que hacen exactamente pronto!)</p></li>
+<li><p>Es posible que desees anular el mapeo predeterminado de las variables transformadas a la estética.
+Por ejemplo, es posible que desees mostrar un gráfico de barras de proporciones, en lugar de un recuento:</p>
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> <span class="dv">1</span>))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-35-1.png" width="70%" style="display: block; margin: auto;" /></p></li>
+</ol>
+<p>Para encontrar las variables calculadas por la estadística, busca la sección de ayuda titulada “Variables calculadas”.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Es posible que desees resaltar la transformación estadística en tu código.
+Por ejemplo, puedes usar <code>stat_summary()</code>, que resume los valores de y para cada valor único de x, para resaltar el resumen que se está computando:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">stat_summary</span>(
+  <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">y =</span> profundidad),
+  <span class="dt">fun.ymin =</span> min,
+  <span class="dt">fun.ymax =</span> max,
+ <span class="dt">fun.y =</span> median)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-36-1.png" width="70%" style="display: block; margin: auto;" /></p></li>
+</ol>
+<p><strong>ggplot2</strong> proporciona más de 20 estadísticas para que uses. Cada estadística es una función, por lo que puedes obtener ayuda de la manera habitual, por ejemplo: <code>?stat_bin</code>. Para ver una lista completa de estadísticas disponibles para <strong>ggplot2</strong>, consulta la hoja de referencia.</p>
+<div id="ejercicios-4" class="section level3">
+<h3><span class="header-section-number">3.7.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>¿Cuál es el geom predeterminado asociado con <code>stat_summary()</code>?
+¿Cómo podrías reescribir el gráfico anterior para usar esa función geom en lugar de la función stat?</p></li>
+<li><p>¿Qué hace <code>geom_col()</code>? ¿Cómo es diferente a <code>geom_bar()</code>?</p></li>
+<li><p>La mayoría de los geoms y las estadísticas vienen en pares que casi siempre se usan en conjunto.
+Lee la documentación y has una lista de todos los pares. ¿Qué tienen en común?</p></li>
+<li><p>¿Qué variables calcula <code>stat_smooth()</code>? ¿Qué parámetros controlan su comportamiento?</p></li>
+<li><p>En nuestro gráfico de barras de proporción , necesitamos establecer <code>group = 1</code>. ¿Por qué?
+En otras palabras, ¿cuál es el problema con estos dos gráficos?</p>
+<pre class="sourceCode r"><code class="sourceCode r">
+<span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">y =</span> ..prop..))
+
+<span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> color, <span class="dt">y =</span> ..prop..))</code></pre></li>
+</ol>
+</div>
+</div>
+<div id="ajustes-de-posicion" class="section level2">
+<h2><span class="header-section-number">3.8</span> Ajustes de posición</h2>
+<p>Hay una pieza más de magia asociada con los gráficos de barras. Puede colorear un gráfico de barras usando la estética de <code>color</code> o, tal vez con el más útil <code>fill</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">colour =</span> corte))
+  
+<span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> corte))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-38-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-38-2.png" width="50%" /></p>
+<p>Mira lo que sucede si asigna la estética de relleno a otra variable, como <code>claridad</code>: las barras se apilan automáticamente. Cada rectángulo de color representa una combinación de <code>corte</code> y <code>claridad</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> claridad))</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-39-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>El apilamiento se realiza automáticamente mediante el ajuste de posición especificado por el argumento <code>position</code>. Si no deseas un gráfico de barras apiladas , puedes usar una de las otras tres opciones: <code>&quot;identity&quot;</code>, <code>&quot;dodge&quot;</code> o <code>&quot;fill&quot;</code>, del inglés <em>identidad</em>, <em>esquivar</em> y <em>llenar</em> respectivamente.</p>
+<ul>
+<li><code>position = &quot;identity&quot;</code> colocará cada objeto exactamente donde cae en el contexto del gráfico. Esto no es muy útil al momento de graficar barras, porque las superpone. Para ver esa superposición, debemos hacer que las barras sean ligeramente transparentes al configurar alfa a un valor pequeño, o completamente transparente al establecer <code>fill = NA</code>.</li>
+</ul>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> claridad)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">5</span>, <span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)
+     
+<span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">colour =</span> claridad)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-40-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-40-2.png" width="50%" /></p>
+<p>El ajuste de <code>posición = identity</code> es más útil para geoms 2-D, como puntos, donde es la opción predeterminada.</p>
+<ul>
+<li><code>position = &quot;fill&quot;</code> funciona como el apilamiento, pero hace que cada conjunto de barras apiladas tenga la misma altura. Esto hace que sea más fácil comparar proporciones entre grupos.</li>
+</ul>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> claridad), <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-41-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<ul>
+<li><code>position = &quot;dodge&quot;</code> coloca objetos superpuestos directamente uno al lado del otro. Esto hace que sea más fácil comparar valores individuales.</li>
+</ul>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> claridad), <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-42-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Hay otro tipo de ajuste que no es útil para gráficos de barras, pero puede ser muy útil para diagramas de dispersión. Recuerda nuestro primer diagrama de dispersión. ¿Notaste que la trama muestra solo 126 puntos, a pesar de que hay 234 observaciones en el conjunto de datos?</p>
+<p><img src="visualize_files/figure-html/unnamed-chunk-43-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Los valores de las variables <code>autopista</code> y <code>motor</code> se redondean de modo que los puntos aparecen en una cuadrícula y muchos se superponen entre sí. Este problema se conoce como <strong>sobregraficado</strong> (<em>overplotting</em>). Esta disposición hace que sea difícil ver dónde está la masa de datos. ¿Los puntos de datos se distribuyen equitativamente a lo largo de la gráfica, o hay una combinación especial de <code>autopista</code> y <code>motor</code> que contiene 109 valores?</p>
+<p>Puedes evitar esta grilla estableciendo el ajuste de posición en “jitter”. <code>position = &quot;jitter&quot;</code> agrega una pequeña cantidad de ruido aleatorio a cada punto. Esto dispersa los puntos ya que no es probable que dos puntos reciban la misma cantidad de ruido aleatorio.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> motor, <span class="dt">y =</span> autopista), <span class="dt">position =</span> <span class="st">&quot;jitter&quot;</span>)</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-44-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Si bien agregar aleatoriedad a los puntos puede parecer una forma extraña de mejorar tu gráfico ya que hace que sea menos preciso a escalas pequeñas, lo hace ser más revelador a gran escala. Como esta es una operación tan útil, ggplot2 viene con una abreviatura de geom_point (position = “jitter”): geom_jitter ().</p>
+<p>Para obtener más información sobre ajustes de posición, busca la página de ayuda asociada con cada ajuste: <code>?position_dodge</code>, <code>?position_fill</code>, <code>?position_identity</code>, <code>?position_jitter</code> y <code>?position_stack</code>.</p>
+<div id="ejercicios-5" class="section level3">
+<h3><span class="header-section-number">3.8.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li>¿Cuál es el problema con este gráfico? ¿Cómo podrías mejorarlo?</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-45-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>¿Qué parámetros de <code>geom_jitter()</code> controlan la cantidad de ruido?</p></li>
+<li><p>Compara y contrasta <code>geom_jitter()</code> con <code>geom_count ()</code></p></li>
+<li><p>¿Cuál es el ajuste de posición predeterminado de <code>geom_boxplot()</code>? Crea una visualización del conjunto de datos de <code>millas</code> que lo demuestre.</p></li>
+</ol>
+</div>
+</div>
+<div id="sistemas-de-coordenadas" class="section level2">
+<h2><span class="header-section-number">3.9</span> Sistemas de coordenadas</h2>
+<p>Los sistemas de coordenadas son probablemente la parte más complicada de ggplot2. El sistema predeterminado es el sistema de coordenadas cartesianas, donde las posiciones x e y actúan independientemente para determinar la ubicación de cada punto. Hay varios otros sistemas de coordenadas que ocasionalmente son útiles.</p>
+<ul>
+<li><p><code>coord_flip()</code> cambia los ejes x e y. Esto es útil (por ejemplo), si quieres diagramas de caja horizontales. También es útil para etiquetas largas: es difícil ajustarlas sin superposición en el eje x.</p>
+<pre class="sourceCode r"><code class="sourceCode r">
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> clase, <span class="dt">y =</span> autopista)) <span class="op">+</span><span class="st"> </span>
+<span class="st">   </span><span class="kw">geom_boxplot</span>()
+
+<span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> clase, <span class="dt">y =</span> autopista))  <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-46-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-46-2.png" width="50%" /></p></li>
+<li><p><code>coord_quickmap()</code> establece la relación de aspecto correctamente para los mapas. Esto es muy importante si graficas datos espaciales con ggplot2 (tema que desafortunadamente no contamos con espacio para desarrollar en este libro).</p>
+<pre class="sourceCode r"><code class="sourceCode r">nz &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;nz&quot;</span>)
+
+<span class="kw">ggplot</span>(nz, <span class="kw">aes</span>(long, lat, <span class="dt">group =</span> group)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>)
+
+<span class="kw">ggplot</span>(nz, <span class="kw">aes</span>(long, lat, <span class="dt">group =</span> group)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_quickmap</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-47-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-47-2.png" width="50%" /></p></li>
+<li><p><code>coord_polar()</code> usa coordenadas polares. Las coordenadas polares revelan una conexión interesante entre un gráfico de barras y un gráfico de Coxcomb.</p>
+<pre class="sourceCode r"><code class="sourceCode r">bar &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> diamantes) <span class="op">+</span><span class="st"> </span>
+<span class="kw">geom_bar</span>(
+ <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> corte, <span class="dt">fill =</span> corte), 
+ <span class="dt">show.legend =</span> <span class="ot">FALSE</span>,
+ <span class="dt">width =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st"> </span><span class="kw">theme</span>(<span class="dt">aspect.ratio =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="ot">NULL</span>)
+
+bar <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()
+bar <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-48-1.png" width="50%" /><img src="visualize_files/figure-html/unnamed-chunk-48-2.png" width="50%" /></p></li>
+</ul>
+<div id="ejercicios-6" class="section level3">
+<h3><span class="header-section-number">3.9.1</span> Ejercicios</h3>
+<ol style="list-style-type: decimal">
+<li><p>Convierte un gráfico de barras apiladas en un gráfico circular usando <code>coord_polar ()</code>.</p></li>
+<li><p>¿Qué hace <code>labs()</code>? Lee la documentación.</p></li>
+<li><p>¿Cuál es la diferencia entre <code>coord_quickmap()</code> y <code>coord_map()</code>?</p></li>
+<li><p>¿Qué te dice la gráfica siguiente sobre la relación entre la ciudad y la <code>autopista</code>? ¿Por qué es <code>coord_fixed()</code> importante? ¿Qué hace <code>geom_abline()</code>?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> millas, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> ciudad, <span class="dt">y =</span> autopista)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_fixed</span>()</code></pre>
+<p><img src="visualize_files/figure-html/unnamed-chunk-49-1.png" width="50%" style="display: block; margin: auto;" /></p></li>
+</ol>
+</div>
+</div>
+<div id="la-gramatica-de-graficos-en-capas" class="section level2">
+<h2><span class="header-section-number">3.10</span> La gramática de gráficos en capas</h2>
+<p>En las secciones anteriores, aprendiste mucho más que cómo hacer diagramas de dispersión, gráficos de barras y diagramas de caja. Aprendiste una base que se puede usar para hacer cualquier tipo de gráfico con <strong>ggplot2</strong>. Para ver esto, agreguemos ajustes de posición, estadísticas, sistemas de coordenadas y facetas a nuestra plantilla de código:</p>
+<pre><code>ggplot(data = &lt;DATOS&gt;) + 
+  &lt;GEOM_FUNCION&gt;( 
+     mapping = aes(&lt;MAPEOS&gt;),
+     stat = &lt;ESTADISTICA&gt;, 
+     position = &lt;POSICION&gt;
+  ) +
+  &lt;FUNCION_COORDENADAS&gt; +
+  &lt;FUNCION_FACETAS&gt;
+</code></pre>
+<p>Nuestra nueva plantilla tiene siete parámetros que se corresponde con las palabras entre corchetes que aparecen en la plantilla. En la práctica, rara vez necesitas proporcionar los siete parámetros para hacer un gráfico porque <strong>ggplot2</strong> proporcionará valores predeterminados útiles para todos excepto para los datos, las asignaciones y la función geom.</p>
+<p>Los siete parámetros en la plantilla componen la gramática de los gráficos, un sistema formal de construcción de gráficos. La gramática de los gráficos se basa en la idea de que puedes describir de manera única <em>cualquier</em> gráfico como una combinación de un conjunto de datos, un geom, un conjunto de asignaciones, una estadística, un ajuste de posición, un sistema de coordenadas y un esquema de facetado.
+To see how this works, consider how you could build a basic plot from scratch: you could start with a dataset and then transform it into the information that you want to display (with a stat).</p>
+<p>Para ver cómo funciona esto, considera cómo podrías construir un gráfico básico desde cero: podrías comenzar con un conjunto de datos y luego transformarlo en la información que deseas mostrar (con una estadística).</p>
+<p><img src="images/visualization-grammar-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>A continuación, podrías elegir un objeto geométrico para representar cada observación en los datos transformados. Luego podrías usar las propiedades estéticas de los geoms para representar variables de los datos. Asignarías los valores de cada variable a los niveles de una estética.</p>
+<p><img src="images/visualization-grammar-2.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Posteriormente, seleccionarías un sistema de coordenadas para colocar los geoms. Podrías utilizar la ubicación de los objetos (que es en sí misma una propiedad estética) para mostrar los valores de las variables x e y. Ya en este punto podrías tener un gráfico completo, pero también podrías ajustar aún más las posiciones de los geoms dentro del sistema de coordenadas (un ajuste de posición) o dividir el gráfico en subtramas (facetas). También podrías extender el gráfico agregando una o más capas adicionales, donde cada capa adicional usaría un conjunto de datos, un geom, un conjunto de asignaciones, una estadística y un ajuste de posición.</p>
+<p><img src="images/visualization-grammar-3.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Puedes usar este método para construir <em>cualquier</em> gráfico que imagines. En otras palabras, puedes usar la plantilla de código aprendiste en este capítulo para construir cientos de miles de gráficos únicos.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="explora-introduccion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="workflow-basics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/hadley/r4ds/edit/master/visualize.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
